@@ -6,11 +6,12 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String },
   bio: { type: String },
   mobile: { type: Number },
+  registration_no:{type:Number,required:true}
 });
 const otpSchema = new mongoose.Schema({
-  email: { type: String, required: true },
+  email: { type: String, required: true},
   code: { type: Number, required: true },
-  validTime: { type: Date, default: Date.now },
+  expiresAt: { type: Date,require:true},
 });
 const User = mongoose.model("User", userSchema);
 const OTP=mongoose.model("OTP",otpSchema)

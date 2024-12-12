@@ -15,7 +15,7 @@ module.exports = async (email, subject, body) => {
       from: process.env.EMAILID,
       to: email,
       subject: subject,
-      text: text,
+      text: body,
     });
     return {
       success: true,
