@@ -9,7 +9,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(cookieParser);
+app.use(cookieParser());
 app.use(express.json());
 app.use(
   fileUpload({
@@ -18,7 +18,9 @@ app.use(
   })
 );
 require("./config/connectDB").connectDB();
-const PORT = process.env.PORT||3000;
+const userRouter = require("./routes/userRoutes");
+app.use("/api", userRouter);
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port:${PORT}`);
 });
