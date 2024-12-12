@@ -9,6 +9,7 @@ function App() {
   const [mode, setMode] = useState(
     () => localStorage.getItem("mode") || "dark"
   );
+  
 
   useEffect(() => {
     if (mode === "dark") {
