@@ -1,0 +1,13 @@
+const mongoose=require("mongoose")
+const marketplaceSchema = new mongoose.Schema({
+    itemName: { type: String, required: true },
+    description: { type: String },
+    category: { type: String, required: true },
+    price: { type: Number, required: true },
+    sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    availability: { type: Boolean, default: true },
+    images: [{ type: String }], // URLs for images
+    createdAt: { type: Date, default: Date.now }
+  });
+const Market=mongoose.model("Market",marketplaceSchema)
+module.exports={Market}
