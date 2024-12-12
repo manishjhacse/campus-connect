@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
-// import { Button } from '@nextui-org/react';
 import Imagecontent from "./components/Imagecontent";
 
 function App() {
@@ -27,7 +26,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen transition-all duration-200 ease-linear min-w-screen  flex justify-center items-center  relative dark:bg-black dark:text-white">
+      <div className="min-h-screen transition-all duration-200 ease-linear min-w-screen  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
         <button
           className="absolute top-5 right-5 p-2 bg-gray-200 rounded-md shadow-md"
           onClick={handleMode}
