@@ -9,7 +9,7 @@ function Login() {
         color="primary"
         variant="shadow"
         size="lg"
-        onClick={() => document.getElementById("my_modal_5").showModal()}
+        onClick={() => document.getElementById("login_modal").showModal()}
       >
         Login
         <span className="-ml-2 h-5 w-5 translate-y-[0.15rem] transition-transform group-hover:translate-x-2">
@@ -29,7 +29,7 @@ function Login() {
         </span>
       </Button>
 
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle  ">
+      <dialog id="login_modal" className="modal modal-bottom sm:modal-middle  ">
         <div className="modal-box  dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111] ">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -70,9 +70,12 @@ function Login() {
               <a href="#" className="hover:underline">
                 Forgot Password?
               </a>
-              <a href="#" className="hover:underline">
-                Create account
-              </a>
+              <button onClick={() => {
+                document.getElementById("login_modal").close()
+                document.getElementById("signup_modal").showModal()
+              }} className="underline ml-2">
+                Create Account
+              </button>
             </div>
           </div>
 
