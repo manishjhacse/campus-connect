@@ -27,10 +27,10 @@ function Imagecontent() {
         </div>
         <div className="flex flex-row gap-3">
           {/* Login Button */}
-          <Signup />
           <Login />
 
           {/* Signup Button */}
+          <Signup />
         </div>
       </div>
     </section>
