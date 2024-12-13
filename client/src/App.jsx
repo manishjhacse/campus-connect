@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
-// import { Button } from '@nextui-org/react';
+// import { Button } from "@nextui-org/react";
 import Imagecontent from "./components/Imagecontent";
 
 function App() {
   const [mode, setMode] = useState(
     () => localStorage.getItem("mode") || "dark"
   );
-  
 
   useEffect(() => {
     if (mode === "dark") {
@@ -36,6 +35,8 @@ function App() {
         </button>
 
         <Imagecontent />
+
+        
       </div>
     </>
   );
