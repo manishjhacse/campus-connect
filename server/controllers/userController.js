@@ -14,7 +14,7 @@ exports.signupOTP = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists with this email id",
+        message: "Email already Registered",
       });
     }
     const code = Math.floor(1000 + Math.random() * 9000);
@@ -84,7 +84,7 @@ exports.signupOTP = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password, otp, registration_no } = req.body;
+    const { firstName,lastName, email, password, otp, registration_no } = req.body;
     const sentOtp = await OTP.findOne({ email });
     if (sentOtp.code == otp && sentOtp.expiresAt < new Date(Date.now())) {
       return res.status(400).json({
@@ -109,7 +109,8 @@ exports.signup = async (req, res) => {
       });
     }
     const user = await User.create({
-      name,
+      firstName,
+      lastName,
       password: hashedPassword,
       email,
       registration_no,

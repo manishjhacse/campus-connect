@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
-// import { Button } from "@nextui-org/react";
+import { Toaster } from "react-hot-toast";
 import Imagecontent from "./pages/Imagecontent";
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
 
         <Imagecontent />
 
-        
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
   );
