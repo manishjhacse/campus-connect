@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
-const { nextui } = require("@nextui-org/react");
+import { nextui } from "@nextui-org/react";
+import daisyui from "daisyui";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -8,7 +8,6 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
-
   darkMode: "class",
   theme: {
     extend: {
@@ -17,8 +16,5 @@ export default {
       },
     },
   },
-
-  plugins: [nextui(),
-    require('daisyui'),
-  ],
+  plugins: [nextui(), daisyui],
 };
