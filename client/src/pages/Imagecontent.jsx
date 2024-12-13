@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import Signup from "./Signup";
-import Login from "./Login";
+import Signup from "../components/Signup";
+import Login from "../components/Login";
 import { Image } from "@nextui-org/image";
 
 function Imagecontent() {
