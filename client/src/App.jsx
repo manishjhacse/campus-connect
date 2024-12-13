@@ -3,7 +3,7 @@ import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
 // import { Button } from "@nextui-org/react";
-import Imagecontent from "./components/Imagecontent";
+import Imagecontent from "./pages/Imagecontent";
 
 function App() {
   const [mode, setMode] = useState(

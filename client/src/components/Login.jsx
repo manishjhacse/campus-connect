@@ -29,7 +29,7 @@ function Login() {
         </span>
       </Button>
 
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle  ">
+      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
         <div className="modal-box  dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111] ">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
