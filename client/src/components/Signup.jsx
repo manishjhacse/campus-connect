@@ -34,7 +34,7 @@ function Signup() {
   //otp function
   async function sendotp(e) {
     e.preventDefault();
-    if(signupForm.email==""){
+    if (signupForm.email == "") {
       toast.error("Please Enter Email")
       return;
     }
@@ -74,10 +74,12 @@ function Signup() {
       return;
     }
     if (signupForm.password != signupForm.confirmPassword) {
-      toast.error("Password & Confirm password does not match");
+      toast.error("incorrect confirm password");
       return;
     }
     await signup();
+    document.getElementById("login_modal").showModal();
+    document.getElementById("signup_modal").close();
   }
   return (
     <div>

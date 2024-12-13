@@ -1,8 +1,48 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { changeLoggedIn } from "../store/loginSlice";
+import { changeLoggedInUser } from "../store/userSlice";
 
 function Login() {
+  const dispatch=useDispatch();
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: ""
+  });
+  function handleLoginData(e) {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value })
+  }
+  async function handleLogin(e) {
+    e.preventDefault();
+    const url = import.meta.env.VITE_BASE_URL;
+    if (loginData.email == "" || loginData.password == "") {
+      toast.error("Please Enter all Details")
+      return;
+    }
+    const toastId = toast.loading('Verifying Details...');
+    try{
+      const res=await axios.post(`${url}/login`,loginData,{
+        withCredentials:true
+      })
+      const user=res.data.user
+      localStorage.setItem("isLoggedin", true);
+      localStorage.setItem("loggedInUser", user);
+      localStorage.setItem("token", res.data.token);
+      dispatch(changeLoggedIn(true))
+      dispatch(changeLoggedInUser(user))
+      toast.dismiss(toastId);
+      toast.success("Logged in");
+    }catch(err){
+      console.log(err);
+      toast.dismiss(toastId);
+      toast.error(err.response.data.message);
+    }
+    
+  }
   return (
     <div>
       <Button
@@ -47,8 +87,11 @@ function Login() {
               </label>
               <input
                 id="email"
+                name="email"
+                value={loginData.email}
                 type="email"
                 placeholder="Email"
+                onChange={e => handleLoginData(e)}
                 className="placeholder:text-gray-500 placeholder:font-normal border-zinc-300 dark:border-zinc-700 focus-visible:outline-zinc-500 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-zinc-500 focus-visible:border-transparent py-2 px-3 rounded bg-transparent"
               />
             </div>
@@ -59,11 +102,14 @@ function Login() {
               <input
                 id="password"
                 type="password"
+                name="password"
+                value={loginData.password}
+                onChange={e => handleLoginData(e)}
                 placeholder="Password"
                 className="placeholder:text-gray-500 placeholder:font-normal border-zinc-300 dark:border-zinc-700 focus-visible:outline-zinc-500 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-zinc-500 focus-visible:border-transparent py-2 px-3 rounded bg-transparent"
               />
             </div>
-            <Button variant="shadow" color="primary">
+            <Button onClick={(e)=>{handleLogin(e)}} variant="shadow" color="primary">
               Sign in
             </Button>
             <div className="flex items-baseline justify-between text-sm font-semibold">

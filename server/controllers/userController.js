@@ -82,9 +82,11 @@ exports.signupOTP = async (req, res) => {
   }
 };
 
+//signup
 exports.signup = async (req, res) => {
   try {
-    const { firstName,lastName, email, password, otp, registration_no } = req.body;
+    const { firstName, lastName, email, password, otp, registration_no } =
+      req.body;
     const sentOtp = await OTP.findOne({ email });
     if (sentOtp.code == otp && sentOtp.expiresAt < new Date(Date.now())) {
       return res.status(400).json({
@@ -124,6 +126,58 @@ exports.signup = async (req, res) => {
       success: false,
       message: "User can't created, Try again",
       error: err,
+    });
+  }
+};
+
+//login
+exports.login = async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "please provide all the details",
+      });
+    }
+    email = email.toLowerCase();
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Email not registered!",
+      });
+    }
+    const payload = {
+      email: user.email,
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+    if (await bcrypt.compare(password, user.password)) {
+      let token = await jwt.sign(payload, process.env.SECRETCODE, {});
+      user.password = undefined;
+      const options = {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      };
+      return res.status(200).cookie("token", token, options).json({
+        success: true,
+        token,
+        user,
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect Password",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Login failure, Try Again",
+      Error: err,
     });
   }
 };
