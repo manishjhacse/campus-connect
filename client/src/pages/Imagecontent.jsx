@@ -11,7 +11,7 @@ function Imagecontent() {
         <Image
           isBlurred
           className="mx-auto aspect-[1/0.7] w-full rounded-2xl object-cover sm:aspect-[1/0.5] sm:object-top lg:aspect-[1.25/1] lg:max-w-[33rem]"
-          src="https://img.freepik.com/free-vector/conversation-concept-illustration_114360-1102.jpg?t=st=1734067264~exp=1734070864~hmac=b3445c7a60ee76f12cbbbcbf0f676346f230e45124d0ff894b3af06083114aeb&w=1060"
+          src="https://res.cloudinary.com/db7mrhtue/image/upload/v1734087954/7118856_3288524_g8ysf5.jpg"
           alt="A collaborative social platform"
         />
       </div>

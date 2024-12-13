@@ -30,7 +30,10 @@ function Signup() {
         </span>
       </Button>
 
-      <dialog id="signup_modal" className="modal modal-bottom sm:modal-middle  ">
+      <dialog
+        id="signup_modal"
+        className="modal modal-bottom sm:modal-middle  "
+      >
         <div className="modal-box  dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111]">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -59,10 +62,20 @@ function Signup() {
                   className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60 focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
                 />
               </div>
+              <div className="relative">
+
               <input
                 id="email"
                 type="email"
                 placeholder="Email"
+                className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60  focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
+              />
+              <button className="absolute bg-[#f31260] text-white rounded-full px-1 py-1 top-1/2 text-xs -translate-y-1/2 right-2">Request OTP</button>
+              </div>
+              <input
+                id="OTP"
+                type="text"
+                placeholder="OTP"
                 className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60 focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
               />
               <input
@@ -90,10 +103,13 @@ function Signup() {
             </Button>
             <div className="flex text-sm font-semibold mx-auto mt-3">
               Already have an account ?
-              <button onClick={() => {
-                document.getElementById("login_modal").showModal()
-                document.getElementById("signup_modal").close()
-              }} className="underline ml-2">
+              <button
+                onClick={() => {
+                  document.getElementById("login_modal").showModal();
+                  document.getElementById("signup_modal").close();
+                }}
+                className="underline ml-2"
+              >
                 Sign in
               </button>
             </div>
