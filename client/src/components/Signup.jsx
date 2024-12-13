@@ -34,6 +34,10 @@ function Signup() {
   //otp function
   async function sendotp(e) {
     e.preventDefault();
+    if(signupForm.email==""){
+      toast.error("Please Enter Email")
+      return;
+    }
     const url = import.meta.env.VITE_BASE_URL;
     console.log(url)
     const toastId = toast.loading('Sending otp...');
@@ -151,7 +155,7 @@ function Signup() {
                   placeholder="Email"
                   className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60  focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
                 />
-                <button disabled={!showOtpButton} onClick={(e) => { sendotp(e) }} className={`absolute ${showOtpButton ? "cursor-pointer" : "cursor-not-allowed "} bg-[#f31260] text-white rounded-full px-1 py-1 top-1/2 text-xs -translate-y-1/2 right-2`}>{otpButton}</button>
+                <button disabled={!showOtpButton} onClick={(e) => { sendotp(e) }} className={`absolute ${showOtpButton ? "cursor-pointer" : "cursor-not-allowed "} bg-[#f31260] font-semibold text-white dark:text-black rounded-full px-1 py-1 top-1/2 text-xs -translate-y-1/2 right-2`}>{otpButton}</button>
               </div>
               <input
                 id="otp"
