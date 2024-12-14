@@ -3,8 +3,14 @@ import React from "react";
 import Signup from "../components/Signup";
 import Login from "../components/Login";
 import { Image } from "@nextui-org/image";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function LandingPage() {
+  const isLoggedin = useSelector((state) => state.isLoggedin);
+  if (isLoggedin) {
+    return <Navigate to="/home" />
+  }
   return (
     <section className="mx-4 my-6 grid max-w-[90rem] grid-cols-1 justify-center gap-12 lg:mx-auto lg:grid-cols-[repeat(auto-fit,minmax(30rem,1fr))]">
       <div className="flex items-center justify-end">

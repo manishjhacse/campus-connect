@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import axios from "axios"
 function Signup() {
   const [signupForm, setSignupForm] = useState({ firstName: "", lastName: "", email: "", otp: "", password: "", confirmPassword: "", registration_no: "" })
@@ -216,6 +216,7 @@ function Signup() {
 
           <div className="modal-action"></div>
         </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </dialog>
     </div>
   );

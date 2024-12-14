@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
-import { toast } from "react-hot-toast";
+import { toast,Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { changeLoggedIn } from "../store/loginSlice";
 import { changeLoggedInUser } from "../store/userSlice";
 
 function Login() {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -24,11 +24,11 @@ function Login() {
       return;
     }
     const toastId = toast.loading('Verifying Details...');
-    try{
-      const res=await axios.post(`${url}/login`,loginData,{
-        withCredentials:true
+    try {
+      const res = await axios.post(`${url}/login`, loginData, {
+        withCredentials: true
       })
-      const user=res.data.user
+      const user = res.data.user
       localStorage.setItem("isLoggedin", true);
       localStorage.setItem("loggedInUser", user);
       localStorage.setItem("token", res.data.token);
@@ -36,12 +36,12 @@ function Login() {
       dispatch(changeLoggedInUser(user))
       toast.dismiss(toastId);
       toast.success("Logged in");
-    }catch(err){
+    } catch (err) {
       console.log(err);
       toast.dismiss(toastId);
       toast.error(err.response.data.message);
     }
-    
+
   }
   return (
     <div>
@@ -109,7 +109,7 @@ function Login() {
                 className="placeholder:text-gray-500 placeholder:font-normal border-zinc-300 dark:border-zinc-700 focus-visible:outline-zinc-500 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-zinc-500 focus-visible:border-transparent py-2 px-3 rounded bg-transparent"
               />
             </div>
-            <Button onClick={(e)=>{handleLogin(e)}} variant="shadow" color="primary">
+            <Button onClick={(e) => { handleLogin(e) }} variant="shadow" color="primary">
               Sign in
             </Button>
             <div className="flex items-baseline justify-between text-sm font-semibold">
@@ -127,6 +127,7 @@ function Login() {
 
           <div className="modal-action"></div>
         </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </dialog>
     </div>
   );

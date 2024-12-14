@@ -4,8 +4,9 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 
-// import LandingPage from "./pages/Landingpage";
+import LandingPage from "./pages/LandingPage";
 import Homepage from "./pages/Homepage";
+import Layout from "./pages/Layout";
 
 function App() {
   const [mode, setMode] = useState(
@@ -28,7 +29,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen transition-all duration-200 ease-linear min-w-screen  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
+      <div className="min-h-screen transition-all text-black duration-200 ease-linear min-w-screen  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
         <button
           className="absolute top-5 right-5 p-2 bg-gray-200 rounded-md shadow-md"
           onClick={handleMode}
@@ -36,8 +37,8 @@ function App() {
           {mode == "dark" ? <MdOutlineWbSunny /> : <FaMoon />}
         </button>
 
-        {/* <LandingPage /> */}
-        <Homepage />
+
+        <Layout/>
 
         <Toaster position="top-center" reverseOrder={false} />
       </div>
