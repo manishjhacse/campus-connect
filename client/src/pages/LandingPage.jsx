@@ -4,7 +4,7 @@ import Signup from "../components/Signup";
 import Login from "../components/Login";
 import { Image } from "@nextui-org/image";
 
-function Imagecontent() {
+function LandingPage() {
   return (
     <section className="mx-4 my-6 grid max-w-[90rem] grid-cols-1 justify-center gap-12 lg:mx-auto lg:grid-cols-[repeat(auto-fit,minmax(30rem,1fr))]">
       <div className="flex items-center justify-end">
@@ -37,4 +37,4 @@ function Imagecontent() {
   );
 }
 
-export default Imagecontent;
+export default LandingPage;

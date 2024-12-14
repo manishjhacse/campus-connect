@@ -3,7 +3,9 @@ import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
-import Imagecontent from "./pages/Imagecontent";
+
+// import LandingPage from "./pages/Landingpage";
+import Homepage from "./pages/Homepage";
 
 function App() {
   const [mode, setMode] = useState(
@@ -34,7 +36,8 @@ function App() {
           {mode == "dark" ? <MdOutlineWbSunny /> : <FaMoon />}
         </button>
 
-        <Imagecontent />
+        {/* <LandingPage /> */}
+        <Homepage />
 
         <Toaster position="top-center" reverseOrder={false} />
       </div>
