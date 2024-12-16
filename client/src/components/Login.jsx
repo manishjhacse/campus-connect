@@ -6,9 +6,11 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { changeLoggedIn } from "../store/loginSlice";
 import { changeLoggedInUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -36,6 +38,7 @@ function Login() {
       dispatch(changeLoggedInUser(user))
       toast.dismiss(toastId);
       toast.success("Logged in");
+      navigate("/home")
     } catch (err) {
       console.log(err);
       toast.dismiss(toastId);
