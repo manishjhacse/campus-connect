@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import Homepage from "./Homepage";
 import PrivateRoute from "../components/PrivateRoute";
+import Profile from "./Profile";
 
 export default function Layout() {
   return (
@@ -15,6 +16,14 @@ export default function Layout() {
           element={
             <PrivateRoute>
               <Homepage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile/>
             </PrivateRoute>
           }
         />

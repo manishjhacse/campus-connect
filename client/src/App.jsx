@@ -3,9 +3,6 @@ import { FaMoon } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
-
-// import LandingPage from "./pages/LandingPage";
-// import Homepage from "./pages/Homepage";
 import Layout from "./pages/Layout";
 
 function App() {
