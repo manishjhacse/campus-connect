@@ -28,7 +28,7 @@ export const AcmeLogo = () => {
 
 function Navigationbar() {
   return (
-    <Navbar isBordered shouldHideOnScroll>
+    <Navbar shouldHideOnScroll className="w-full">
       <NavbarBrand>
         <AcmeLogo />
         <p className="font-bold text-inherit">Campus Connect</p>

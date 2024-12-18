@@ -5,8 +5,8 @@ import "./App.css";
 import { Toaster } from "react-hot-toast";
 
 // import LandingPage from "./pages/LandingPage";
-// import Homepage from "./pages/Homepage";
-import Layout from "./pages/Layout";
+import Homepage from "./pages/Homepage";
+// import Layout from "./pages/Layout";
 
 function App() {
   const [mode, setMode] = useState(
@@ -38,9 +38,9 @@ function App() {
         </button>
 
 
-        <Layout/>
+        {/* <Layout/> */}
         
-        {/* <Homepage/> */}
+        <Homepage/>
 
         <Toaster position="top-center" reverseOrder={false} />
       </div>
