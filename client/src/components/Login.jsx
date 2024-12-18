@@ -6,9 +6,11 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { changeLoggedIn } from "../store/loginSlice";
 import { changeLoggedInUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -36,6 +38,7 @@ function Login() {
       dispatch(changeLoggedInUser(user))
       toast.dismiss(toastId);
       toast.success("Logged in");
+      navigate("/home")
     } catch (err) {
       console.log(err);
       toast.dismiss(toastId);
@@ -82,11 +85,11 @@ function Login() {
           <div className="grid max-w-md w-full gap-6 px-12 max-sm:px-6 py-8 rounded-lg dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111]">
             <h2 className="text-4xl font-bold my-4 mb-6">Sign in</h2>
             <div className="grid gap-1 w-full dark:text-gray-200">
-              <label htmlFor="email" className="">
+              <label htmlFor="loginemail" className="">
                 Email
               </label>
               <input
-                id="email"
+                id="loginemail"
                 name="email"
                 value={loginData.email}
                 type="email"
@@ -96,11 +99,11 @@ function Login() {
               />
             </div>
             <div className="grid gap-1 w-full dark:text-gray-200">
-              <label htmlFor="password" className="">
+              <label htmlFor="loginpassword" className="">
                 Password
               </label>
               <input
-                id="password"
+                id="loginpassword"
                 type="password"
                 name="password"
                 value={loginData.password}

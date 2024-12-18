@@ -12,6 +12,12 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLoggedIn } from "../store/loginSlice";
+import { changeLoggedInUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export const AcmeLogo = () => {
   return (
@@ -27,6 +33,35 @@ export const AcmeLogo = () => {
 };
 
 function Navigationbar() {
+  const user=useSelector(state=>state.user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  async function handleLogOut() {
+    const toastId = toast.loading("Logging Out")
+    try {
+      const url = import.meta.env.VITE_BASE_URL;
+      const res = await axios.post(`${url}/logout`, {
+        withCredentials: true,
+      });
+
+      if (res.data.success) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("loggedInUser")
+        localStorage.removeItem("isLoggedin")
+        dispatch(changeLoggedIn(false))
+        dispatch(changeLoggedInUser({}))
+        toast.dismiss(toastId);
+        toast.success("Logged out");
+
+      }
+
+    } catch (err) {
+      console.error("Logout error:", err);
+      toast.dismiss(toastId)
+      toast.error("Try Again");
+      navigate("/");
+    }
+  }
   return (
     <Navbar shouldHideOnScroll className="w-full">
       <NavbarBrand>
@@ -69,13 +104,11 @@ function Navigationbar() {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-3">
+            <DropdownItem  onClick={(e)=>navigate("/profile")} key="profile" className="h-14 gap-3">
               <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
+              <p className="font-semibold">{user.firstName}</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Profile</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem onClick={() => { handleLogOut() }} key="logout" color="danger">
               Log Out
             </DropdownItem>
           </DropdownMenu>
