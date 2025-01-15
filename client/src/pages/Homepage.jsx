@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Code, Navbar } from "@nextui-org/react";
 import Features from "../components/Features";
 import Navigationbar from "../components/Navigationbar";
+import Socialfeed from "../components/Socialfeed";
 
 function Homepage() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -22,9 +23,9 @@ function Homepage() {
 
   return (
     <>
-      <div className="container mx-auto w-full">
+      <div className="container overflow-hidden mx-auto w-full">
       <Navigationbar />
-        <div className="flex gap-8 py-20 lg:py-40  w-full items-center justify-center flex-col">
+        <div className="flex gap-8 py-20 lg:py-20  w-full items-center justify-center flex-col">
           <div className="flex gap-4 flex-col">
             <h1 className="text-4xl md:text-5xl max-w-2xl tracking-tighter text-center font-poppins">
               <span className=" font-bold ">
@@ -88,6 +89,16 @@ function Homepage() {
             <Features />
             <Features />
           </section>
+
+          {/* Feeds section--->> */}
+          <span className="relative inline-flex sm:inline mt-12">
+            <span className="bg-gradient-to-r from-[#ffef44] via-[#ff4a44] to-[#FF675E] blur-xl  filter opacity-40 w-full h-full absolute inset-0"></span>
+            <span className="relative text-4xl md:text-5xl  tracking-tighter text-center font-poppins">
+              {" "}
+              Social Feed💭{" "}
+            </span>
+          </span>
+          <Socialfeed/>
         </div>
       </div>
     </>
