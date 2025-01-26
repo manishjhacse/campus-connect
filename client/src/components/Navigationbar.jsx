@@ -40,11 +40,11 @@ function Navigationbar() {
     const toastId = toast.loading("Logging Out")
     try {
       const url = import.meta.env.VITE_BASE_URL;
-      const res = await axios.post(`${url}/logout`, {
-        withCredentials: true,
-      });
+      // const res = await axios.post(`${url}/logout`, {
+      //   withCredentials: true,
+      // });
 
-      if (res.data.success) {
+      // if (res.data.success) {
         localStorage.removeItem("token")
         localStorage.removeItem("loggedInUser")
         localStorage.removeItem("isLoggedin")
@@ -53,7 +53,7 @@ function Navigationbar() {
         toast.dismiss(toastId);
         toast.success("Logged out");
 
-      }
+      // }
 
     } catch (err) {
       console.error("Logout error:", err);
