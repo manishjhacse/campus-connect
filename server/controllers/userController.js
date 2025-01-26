@@ -48,7 +48,7 @@ exports.signupOTP = async (req, res) => {
 
     const otpRecord = await OTP.findOne({ email });
     if (otpRecord) {
-      if (otpRecord.expiresAt-(8*60*1000) > Date.now()) {
+      if (otpRecord.expiresAt - 8 * 60 * 1000 > Date.now()) {
         const remainingTimeInMillis = otpRecord.expiresAt - Date.now();
         const remainingMinutes = Math.floor(remainingTimeInMillis / 60000);
         const remainingSeconds = Math.floor(
@@ -56,7 +56,9 @@ exports.signupOTP = async (req, res) => {
         );
         return res.json({
           success: true,
-          message: `OTP already sent. Request a new one after ${Math.floor((remainingTimeInMillis-8*60*1000)/1000)} seconds.`,
+          message: `OTP already sent. Request a new one after ${Math.floor(
+            (remainingTimeInMillis - 8 * 60 * 1000) / 1000
+          )} seconds.`,
         });
       }
 
@@ -75,7 +77,7 @@ exports.signupOTP = async (req, res) => {
 
     // Send OTP email
     const result = await sendMail({
-      from: "BPMCE Campus Connect",
+      from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
       to: email,
       subject: `Campus Connect Email Verification for ${email}. Your OTP is ${code}`,
       text: `Your Email OTP code: ${code}\nIt is valid for 10 minutes only. Please use this code to verify your email.`,
@@ -210,9 +212,218 @@ exports.signupOTP = async (req, res) => {
     </html>
           `,
     });
-    
-    
-    
+
+    if (result.success) {
+      return res.status(201).json({
+        success: true,
+        message: "OTP sent successfully.",
+        data: result,
+      });
+    } else {
+      if (savedOtp) {
+        await OTP.deleteOne({ _id: savedOtp._id });
+      }
+      return res.status(501).json({
+        success: false,
+        message: "Failed to send OTP. Please try again.",
+        error: result,
+      });
+    }
+  } catch (err) {
+    if (savedOtp) {
+      await OTP.deleteOne({ _id: savedOtp._id });
+    }
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while sending OTP",
+      error: err,
+    });
+  }
+};
+
+// Reset password OTP
+exports.resetOTP = async (req, res) => {
+  let savedOtp;
+  try {
+    let { email } = req.body;
+    email = email.toLowerCase();
+    if (!email) {
+      return res.status(400).json({
+        message: "Please provide an email",
+      });
+    }
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email Not Registered",
+      });
+    }
+    const code = Math.floor(1000 + Math.random() * 9000);
+
+    const otpRecord = await OTP.findOne({ email });
+    if (otpRecord) {
+      if (otpRecord.expiresAt - 8 * 60 * 1000 > Date.now()) {
+        const remainingTimeInMillis = otpRecord.expiresAt - Date.now();
+        return res.json({
+          success: true,
+          message: `OTP already sent. Request a new one after ${Math.floor(
+            (remainingTimeInMillis - 8 * 60 * 1000) / 1000
+          )} seconds.`,
+        });
+      }
+
+      savedOtp = await OTP.findOneAndUpdate(
+        { email },
+        { code, expiresAt: Date.now() + 10 * 60 * 1000 },
+        { new: true }
+      );
+    } else {
+      savedOtp = await OTP.create({
+        email,
+        code,
+        expiresAt: Date.now() + 10 * 60 * 1000,
+      });
+    }
+
+    // Send OTP email
+    const result = await sendMail({
+      from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
+      to: email,
+      subject: `Campus Connect Password Change for ${email}. Your OTP is ${code}`,
+      text: `Your OTP code: ${code}\nIt is valid for 10 minutes only. Please use this code to change your password.`,
+      html: `
+      <html lang="en">
+      <head>
+        <style>
+          body {
+              font-family: 'Poppins', Arial, sans-serif;
+              background-color: #f3f4f6; /* Light Gray */
+              margin: 0;
+              padding: 0;
+              -webkit-font-smoothing: antialiased;
+              color: #1f2937; /* Dark Gray */
+          }
+          .email-container {
+              max-width: 650px;
+              margin: 40px auto;
+              background-color: #ffffff;
+              padding: 25px;
+              border-radius: 12px;
+              border: 1px solid #e5e7eb; /* Light Gray Border */
+              box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+              animation: fadeIn 1.2s ease-in-out;
+          }
+          @keyframes fadeIn {
+              from { opacity: 0; transform: translateY(-20px); }
+              to { opacity: 1; transform: translateY(0); }
+          }
+          .header {
+              text-align: center;
+              background: linear-gradient(135deg, #ef4444, #b91c1c); /* Gradient Red */
+              color: #ffffff;
+              padding: 40px 20px;
+              border-radius: 12px 12px 0 0;
+          }
+          .header h1 {
+              margin: 0;
+              font-size: 30px;
+              font-weight: 700;
+              letter-spacing: 1px;
+          }
+          .header p {
+              margin: 10px 0 0;
+              font-size: 16px;
+              font-weight: 300;
+          }
+          .content {
+              padding: 30px;
+              font-size: 16px;
+              line-height: 1.8;
+              color: #374151; /* Gray-700 */
+          }
+          .content h2 {
+              color: #ef4444; /* Red */
+              font-size: 22px;
+              margin-bottom: 15px;
+              border-bottom: 2px solid #fca5a5; /* Light Red */
+              display: inline-block;
+              padding-bottom: 5px;
+          }
+          .otp {
+              text-align: center;
+              margin: 30px auto;
+              padding: 15px 0;
+              font-size: 28px;
+              font-weight: bold;
+              color: #ffffff;
+              background: linear-gradient(135deg, #ef4444, #b91c1c); /* Gradient Red */
+              border-radius: 8px;
+              letter-spacing: 3px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              max-width: 250px;
+              animation: pulse 1.5s infinite;
+          }
+          @keyframes pulse {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.05); }
+          }
+          .divider {
+              border-top: 2px dashed #e5e7eb; /* Dashed Separator */
+              margin: 30px 0;
+          }
+          .footer {
+              text-align: center;
+              color: #6b7280; /* Gray-500 */
+              padding: 20px;
+              font-size: 14px;
+              background-color: #f9fafb; /* Extra Light Gray */
+              border-radius: 0 0 12px 12px;
+              border-top: 1px solid #e5e7eb;
+          }
+          .footer a {
+              color: #ef4444;
+              text-decoration: none;
+              font-weight: 600;
+              transition: color 0.3s ease;
+          }
+          .footer a:hover {
+              color: #b91c1c; /* Darker Red */
+              text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+      <div class="email-container">
+        <div class="header">
+            <h1>Campus Connect</h1>
+            <p>Password Change Request</p>
+        </div>
+        <div class="content">
+            <h2>OTP for Password Change</h2>
+            <p>Hello <strong>${email}</strong>,</p>
+            <p>
+                You requested to change your password. Use the OTP below to complete the process:
+            </p>
+            <div class="otp">${code}</div>
+            <p>
+                This OTP is valid for <strong>10 minutes</strong>. Please use it promptly to ensure your account security.
+            </p>
+            <div class="divider"></div>
+            <p>
+                If you did not request this, please contact support immediately.
+            </p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 Campus Connect. All rights reserved.</p>
+            <p><a href="mailto:manishjhaproject@gmail.com">Contact Support</a></p>
+        </div>
+      </div>
+      </body>
+      </html>
+      `,
+    });
+
     if (result.success) {
       return res.status(201).json({
         success: true,
@@ -304,7 +515,7 @@ exports.signup = async (req, res) => {
     // Send a welcome email
     try {
       await sendMail({
-        from: "Campus Connect",
+        from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
         to: email,
         subject: "Welcome to Campus Connect!",
         html: `
@@ -403,6 +614,192 @@ exports.logout = async (req, res) => {
       success: false,
       message: "Something went Wrong",
       err,
+    });
+  }
+};
+
+//change password
+exports.changePassword = async (req, res) => {
+  try {
+    const { email, password, otp } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email not Registered!",
+      });
+    }
+
+    // Find the OTP associated with the email
+    const sentOtp = await OTP.findOne({ email });
+    if (!sentOtp) {
+      return res.status(400).json({
+        success: false,
+        message: "First Request an OTP",
+      });
+    }
+
+    // Validate OTP
+    if (Number(sentOtp.code) !== Number(otp)) {
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect OTP.",
+      });
+    }
+
+    if (sentOtp.expiresAt < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP expired. Request a new one.",
+      });
+    }
+
+    // Hash the password
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(password, 10);
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Internal server Error",
+        error: err.message,
+      });
+    }
+
+    // Create a new user
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    // Send a confirmation email
+    try {
+      await sendMail({
+        from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
+        to: email,
+        subject: "Your Password Has Been Successfully Changed",
+        html: `
+        <html lang="en">
+        <head>
+          <style>
+            body {
+              font-family: 'Poppins', Arial, sans-serif;
+              background-color: #f3f4f6; /* Light Gray */
+              margin: 0;
+              padding: 0;
+              color: #1f2937; /* Dark Gray */
+            }
+            .email-container {
+              max-width: 650px;
+              margin: 40px auto;
+              background-color: #ffffff;
+              padding: 25px;
+              border-radius: 12px;
+              border: 1px solid #e5e7eb; /* Light Gray Border */
+              box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+              animation: fadeIn 1.2s ease-in-out;
+            }
+            @keyframes fadeIn {
+              from { opacity: 0; transform: translateY(-20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            .header {
+              text-align: center;
+              background: linear-gradient(135deg, #ef4444, #b91c1c); /* Gradient Red */
+              color: #ffffff;
+              padding: 30px 20px;
+              border-radius: 12px 12px 0 0;
+            }
+            .header h2 {
+              margin: 0;
+              font-size: 26px;
+              font-weight: 700;
+              letter-spacing: 1px;
+            }
+            .content {
+              padding: 30px;
+              font-size: 16px;
+              line-height: 1.8;
+              color: #374151; /* Gray-700 */
+            }
+            .content p {
+              margin-bottom: 20px;
+            }
+            .content a {
+              color: #ffffff;
+              background: linear-gradient(135deg, #ef4444, #dc2626); /* Gradient Red */
+              padding: 12px 20px;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: 600;
+              transition: background-color 0.3s ease;
+              display: inline-block;
+              text-align: center;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .content a:hover {
+              background: linear-gradient(135deg, #b91c1c, #991b1b); /* Darker Red */
+            }
+            .footer {
+              margin-top: 20px;
+              border-top: 2px dashed #e5e7eb; /* Dashed Separator */
+              padding-top: 20px;
+              font-size: 14px;
+              text-align: center;
+              color: #6b7280; /* Gray-500 */
+            }
+            .footer a {
+              color: #ef4444; /* Red-500 */
+              text-decoration: none;
+              font-weight: 600;
+              transition: color 0.3s ease;
+            }
+            .footer a:hover {
+              color: #b91c1c; /* Darker Red */
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="header">
+              <h2>Password Changed Successfully</h2>
+            </div>
+            <div class="content">
+              <p>Hi <strong>${updatedUser.firstName} ${updatedUser.lastName}</strong>,</p>
+              <p>
+                This is to confirm that your password has been successfully updated for your <strong>Campus Connect</strong> account.
+              </p>
+              <p>
+                If you did not initiate this change, please contact our support team immediately to ensure the security of your account.
+              </p>
+              <p style="text-align: center;">
+                <a href="https://bpmce-community.vercel.app/" target="_blank">Go to Campus Connect</a>
+              </p>
+            </div>
+            <div class="footer">
+              <p>If you need any assistance, feel free to <a href="mailto:manishjhaproject@gmail.com">contact our support team</a>.</p>
+              <p>&copy; 2025 Campus Connect. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+        `,
+      });
+    } catch (mailError) {
+      console.error("Error sending password change email:", mailError.message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Password Changed",
+    });
+  } catch (err) {
+    // Handle any unexpected errors
+    return res.status(500).json({
+      success: false,
+      message: "Internal server Error",
+      error: err.message,
     });
   }
 };

@@ -112,13 +112,16 @@ function Login() {
                 className="placeholder:text-gray-500 placeholder:font-normal border-zinc-300 dark:border-zinc-700 focus-visible:outline-zinc-500 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-zinc-500 focus-visible:border-transparent py-2 px-3 rounded bg-transparent"
               />
             </div>
-            <Button onClick={(e) => { handleLogin(e) }} variant="shadow" color="primary">
+            <button className="w-full font-semibold text-white dark:text-black bg-[#f31260]  px-4 py-2 rounded-lg hover:bg-[#ca1454] transition-all duration-200" onClick={(e) => { handleLogin(e) }} >
               Sign in
-            </Button>
+            </button>
             <div className="flex items-baseline justify-between text-sm font-semibold">
-              <a href="#" className="hover:underline">
+              <button  onClick={()=>{
+                document.getElementById("login_modal").close();
+                document.getElementById("reset_modal").showModal();
+              }} className="underline">
                 Forgot Password?
-              </a>
+              </button>
               <button onClick={() => {
                 document.getElementById("login_modal").close()
                 document.getElementById("signup_modal").showModal()
