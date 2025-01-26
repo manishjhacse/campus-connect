@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-module.exports = async (email, subject, body) => {
+module.exports = async (options) => {
   try {
     const transporter = nodemailer.createTransport({
       secure: true,
@@ -11,12 +11,10 @@ module.exports = async (email, subject, body) => {
         pass: process.env.EMAILPASSWORD,
       },
     });
-    await transporter.sendMail({
-      from: process.env.EMAILID,
-      to: email,
-      subject: subject,
-      text: body,
-    });
+    const mailOptions = {
+      ...options,
+    };
+    const info = await transporter.sendMail(mailOptions);
     return {
       success: true,
       message: "mail Sent",

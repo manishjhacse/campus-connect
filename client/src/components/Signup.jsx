@@ -6,7 +6,7 @@ import axios from "axios"
 function Signup() {
   const [signupForm, setSignupForm] = useState({ firstName: "", lastName: "", email: "", otp: "", password: "", confirmPassword: "", registration_no: "" })
   const [otpButton, setOtpButton] = useState("Send OTP")
-  const [showOtpButton, setShowOtpButton] = useState(true)
+  // const [showOtpButton, setShowOtpButton] = useState(true)
   //formchange function
   const handleFormChange = (e) => {
     setSignupForm({ ...signupForm, [e.target.name]: e.target.value });
@@ -40,19 +40,15 @@ function Signup() {
     }
     const url = import.meta.env.VITE_BASE_URL;
     console.log(url)
-    const toastId = toast.loading('Sending otp...');
+    const toastId = toast.loading('Sending OTP...');
     try {
       console.log(signupForm)
       const res = await axios.post(`${url}/signup-otp`, signupForm, {
         withCredentials: true,
       });
       toast.dismiss(toastId);
-      toast.success("otp sent");
-      setShowOtpButton(false)
+      toast.success(res.data.message);
       setOtpButton("Resend OTP")
-      setTimeout(() => {
-        setShowOtpButton(true)
-      }, 10 * 60 * 1000);
     } catch (err) {
       toast.dismiss(toastId);
       toast.error((err.response.data.message));
@@ -157,7 +153,7 @@ function Signup() {
                   placeholder="Email"
                   className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60  focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
                 />
-                <button disabled={!showOtpButton} onClick={(e) => { sendotp(e) }} className={`absolute ${showOtpButton ? "cursor-pointer" : "cursor-not-allowed "} bg-[#f31260] font-semibold text-white dark:text-black rounded-full px-1 py-1 top-1/2 text-xs -translate-y-1/2 right-2`}>{otpButton}</button>
+                <button onClick={(e) => { sendotp(e) }} className={`absolute cursor-pointer bg-[#f31260] font-semibold text-white dark:text-black rounded-full px-1 py-1 top-1/2 text-xs -translate-y-1/2 right-2`}>{otpButton}</button>
               </div>
               <input
                 id="otp"

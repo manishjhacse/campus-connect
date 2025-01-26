@@ -6,7 +6,7 @@ exports.connectDB = async () => {
     console.log("Database Connected Successfully!");
   } catch (err) {
     console.log("Something went wrong while connecting DB");
-    console.log(err);
+    console.log(err.message);
     process.exit(1);
   }
 };
