@@ -5,6 +5,7 @@ import Login from "../components/Login";
 import { Image } from "@nextui-org/image";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import ResetPassword from "../components/ResetPassword";
 
 function LandingPage() {
   const isLoggedin = useSelector((state) => state.isLoggedin);
@@ -37,6 +38,7 @@ function LandingPage() {
 
           {/* Signup Button */}
           <Signup />
+          <ResetPassword/>
         </div>
       </div>
     </section>

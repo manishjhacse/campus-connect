@@ -161,7 +161,7 @@ function Signup() {
                 onChange={(e) => handleFormChange(e)}
                 value={signupForm.otp}
                 type="text"
-                placeholder="otp"
+                placeholder="OTP"
                 className="placeholder:text-gray-500 placeholder:font-normal dark:text-white/80 border-zinc-300 dark:border-zinc-700 focus-visible:outline-gray-600 border focus-visible:outline-2 focus-visible:outline dark:focus-visible:outline-white/60 focus-visible:border-transparent py-2 px-3 rounded bg-transparent w-full"
               />
               <input
@@ -193,9 +193,9 @@ function Signup() {
               />
             </div>
 
-            <Button onClick={(e) => handleSubmit(e)} color="danger" variant="shadow">
+            <button className="w-full font-semibold text-white dark:text-black bg-[#f31260]  px-4 py-2 rounded-lg hover:bg-[#ca1454] transition-all duration-200" onClick={(e) => handleSubmit(e)} >
               Create account
-            </Button>
+            </button>
             <div className="flex text-sm font-semibold mx-auto mt-3">
               Already have an account ?
               <button
