@@ -2,10 +2,10 @@
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Code, Navbar } from "@nextui-org/react";
+import { Code } from "@nextui-org/react";
 import Features from "../components/Features";
-import Navigationbar from "../components/Navigationbar";
 import Socialfeed from "../components/Socialfeed";
+import Navbar from "../components/navbar";
 
 function Homepage() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -24,8 +24,8 @@ function Homepage() {
   return (
     <>
       <div className="container overflow-hidden mx-auto w-full">
-      <Navigationbar />
-        <div className="flex gap-8 py-20 lg:py-20  w-full items-center justify-center flex-col">
+        <Navbar />
+        <div className="flex gap-8 py-20 lg:py-20 mt-3 w-full items-center justify-center flex-col">
           <div className="flex gap-4 flex-col">
             <h1 className="text-4xl md:text-5xl max-w-2xl tracking-tighter text-center font-poppins">
               <span className=" font-bold ">
@@ -98,7 +98,7 @@ function Homepage() {
               Social Feed💭{" "}
             </span>
           </span>
-          <Socialfeed/>
+          <Socialfeed />
         </div>
       </div>
     </>
