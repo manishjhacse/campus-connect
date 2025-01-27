@@ -1,19 +1,26 @@
 const { Post } = require("../model/postModel");
+const { uploadImageToCloudinary } = require("../utills/cloudinary");
 
 exports.addpost = async (req, res) => {
   try {
-    const { content, media } = req.body;
+    const { text } = req.body;
     const authorId = req.user._id;
-    if (!content && !media) {
+    const image = req.files.image;
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!allowedTypes.includes(image.mimetype)) {
+      return res.status(400).json({ message: "Invalid file type." });
+    }
+    if (!text && !image) {
       return res.status(400).json({
         success: false,
         message: "Post Details missing",
       });
     }
+    const uploadResponse = await uploadImageToCloudinary(image, 65);
     const post = await Post.create({
       authorId,
-      content,
-      media,
+      content:text,
+      media:uploadResponse,
     });
     return res.status(200).json({
       success: true,

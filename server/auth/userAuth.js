@@ -6,7 +6,7 @@ exports.auth = async (req, res, next) => {
     if (!token || token == undefined) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorised access",
+        message: "Unauthorised Access",
       });
     }
     try {
@@ -15,13 +15,13 @@ exports.auth = async (req, res, next) => {
     } catch (err) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorised access",
+        message: "Unauthorised Access",
       });
     }
   } catch (err) {
     return res.status(401).json({
       success: false,
-      message: "something went wrong while verifying token",
+      message: "Internal Server Error",
     });
   }
 };

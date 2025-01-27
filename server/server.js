@@ -2,6 +2,8 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
+const userRouter = require("./routes/userRoutes");
+const postRouter=require("./routes/postRoutes")
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const corsOptions = {
@@ -18,8 +20,8 @@ app.use(
   })
 );
 require("./config/connectDB").connectDB();
-const userRouter = require("./routes/userRoutes");
 app.use("/api", userRouter);
+app.use("/api",postRouter)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port:${PORT}`);
