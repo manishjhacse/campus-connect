@@ -26,7 +26,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen transition-all text-black duration-200 ease-linear min-w-screen  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
+      <div className="min-h-screen  transition-all text-black duration-200 ease-linear  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
         <button
           className="absolute top-5 right-5 p-2 bg-gray-200 rounded-md shadow-md"
           onClick={handleMode}

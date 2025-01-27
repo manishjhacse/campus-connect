@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { toast } from "react-hot-toast";
-// import axios from "axios";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLoggedIn } from "../store/loginSlice";
 import { changeLoggedInUser } from "../store/userSlice";
@@ -46,11 +46,12 @@ function Navbar() {
 
   return (
     <>
-      <div className="navbar fixed mb-7 z-20  shadow-lg bg-[#fafafa] dark:bg-[#100f0f] dark:text-zinc-100 text-zinc-800 ">
+      <div className="navbar fixed overflow-hidden mb-7 z-20 flex  shadow-lg bg-[#fafafa] dark:bg-[#100f0f] dark:text-zinc-100 text-zinc-800 ">
+        <div className="w-full md:w-10/12 mx-auto">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">CC</a>
         </div>
-        <div className="flex-none">
+        <div className="flex items-center gap-5">
           {/* Dark/light mode toggle----->> */}
 
           <label className="swap swap-rotate mx-4 h-5 w-5">
@@ -78,7 +79,7 @@ function Navbar() {
 
           {/* profile settings */}
           <Dropdown
-            className=" dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111]"
+            className=" dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 bg-[#fafafa] dark:bg-[#111]"
             placement="bottom-end"
           >
             <DropdownTrigger className=" mx-2">
@@ -112,6 +113,7 @@ function Navbar() {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+        </div>
         </div>
       </div>
     </>
