@@ -2,6 +2,7 @@ const { Post } = require("../model/postModel");
 const { uploadImageToCloudinary } = require("../utills/cloudinary");
 
 exports.addpost = async (req, res) => {
+  console.log("---------------------")
   try {
     const { text } = req.body;
     const authorId = req.user._id;
