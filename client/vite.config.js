@@ -28,22 +28,22 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        navigateFallback: '/offline.html', // Serve offline page when offline
-        runtimeCaching: [
-          {
-            urlPattern: /.*/, // Cache all pages and assets
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'default-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
-              },
-            },
-          },
-        ],
-      },
+      // workbox: {
+      //   navigateFallback: '/offline.html', // Serve offline page when offline
+      //   runtimeCaching: [
+      //     {
+      //       urlPattern: /.*/, // Cache all pages and assets
+      //       handler: 'NetworkFirst',
+      //       options: {
+      //         cacheName: 'default-cache',
+      //         expiration: {
+      //           maxEntries: 50,
+      //           maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
       devOptions: {
         enabled: true,
         type: 'module',
