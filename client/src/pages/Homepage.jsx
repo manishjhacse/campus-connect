@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Code } from "@nextui-org/react";
 import Features from "../components/Features";
 import Socialfeed from "../components/Socialfeed";
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 
 function Homepage() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -23,7 +23,7 @@ function Homepage() {
 
   return (
     <>
-      <div className="container overflow-hidden mx-auto w-full">
+      <div className="overflow-hidden mx-auto w-full">
         <Navbar />
         <div className="flex gap-8 py-20 lg:py-20 mt-3 w-full items-center justify-center flex-col">
           <div className="flex gap-4 flex-col">

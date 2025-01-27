@@ -10,7 +10,7 @@ import StudySession from "./StudySession";
 
 export default function Layout() {
   return (
-    <div>
+    <div className="w-full">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
