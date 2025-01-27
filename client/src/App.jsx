@@ -18,26 +18,11 @@ function App() {
     }
   }, [mode]);
 
-  const handleMode = () => {
-    const newMode = mode === "dark" ? "light" : "dark";
-    setMode(newMode);
-    localStorage.setItem("mode", newMode);
-  };
 
   return (
     <>
-      <div className="min-h-screen  transition-all text-black duration-200 ease-linear  flex justify-center items-center  relative dark:bg-black bg-white dark:text-white">
-        <button
-          className="absolute top-5 right-5 p-2 bg-gray-200 rounded-md shadow-md"
-          onClick={handleMode}
-        >
-          {mode == "dark" ? <MdOutlineWbSunny /> : <FaMoon />}
-        </button>
-
-
-        <Layout/>
-        
-
+      <div className="min-h-screen  transition-all text-black duration-200 ease-linear  flex justify-center  relative dark:bg-black bg-white dark:text-white">
+        <Layout />
         <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>

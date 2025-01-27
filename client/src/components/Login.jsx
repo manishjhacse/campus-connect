@@ -27,6 +27,7 @@ function Login() {
     }
     const toastId = toast.loading('Verifying Details...');
     try {
+      console.log("clicked")
       const res = await axios.post(`${url}/login`, loginData, {
         withCredentials: true
       })

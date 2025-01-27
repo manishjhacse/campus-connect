@@ -2,45 +2,54 @@ const { Post } = require("../model/postModel");
 const { uploadImageToCloudinary } = require("../utills/cloudinary");
 
 exports.addpost = async (req, res) => {
-  console.log("---------------------")
   try {
     const { text } = req.body;
     const authorId = req.user._id;
-    const image = req.files.image;
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-    if (!allowedTypes.includes(image.mimetype)) {
-      return res.status(400).json({ message: "Invalid file type." });
+    let postDetails = { authorId, content: text };
+
+    if (req.files && req.files.image) {
+      const image = req.files.image;
+
+      if (!allowedTypes.includes(image.mimetype)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid file type.",
+        });
+      }
+      const uploadResponse = await uploadImageToCloudinary(image, 70);
+      postDetails.media = uploadResponse;
     }
-    if (!text && !image) {
+
+    if (!postDetails.content && !postDetails.media) {
       return res.status(400).json({
         success: false,
-        message: "Post Details missing",
+        message: "Post details missing.",
       });
     }
-    const uploadResponse = await uploadImageToCloudinary(image, 65);
-    const post = await Post.create({
-      authorId,
-      content:text,
-      media:uploadResponse,
-    });
+    const post = await Post.create(postDetails);
+    const populatedPost = await post.populate("authorId", "firstName lastName profilePicture");
     return res.status(200).json({
       success: true,
       message: "Post created successfully",
+      post:populatedPost
     });
   } catch (err) {
+    console.error("Error creating post:", err.message);
+
     return res.status(500).json({
       success: false,
-      Error: err,
-      message: "Something went wrong!",
+      message: "Something went wrong! Please try again.",
     });
   }
 };
 
+
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("authorId", "firstName lastName profilePicture") // Include only `name` and `image` from the User model
-      .sort({ createdAt: -1 });
+      .populate("authorId", "firstName lastName profilePicture") 
+      .sort({ timestamp: -1 });
 
     if (posts.length === 0) {
       return res.status(404).json({

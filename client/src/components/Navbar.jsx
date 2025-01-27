@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,23 @@ function Navbar() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [mode, setMode] = useState(
+    () => localStorage.getItem("mode") || "dark"
+  );
+  useEffect(() => {
+    if (mode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [mode]);
+  const handleMode = () => {
+    const newMode = mode === "dark" ? "light" : "dark";
+    setMode(newMode);
+    localStorage.setItem("mode", newMode);
+  };
+
+
   async function handleLogOut() {
     const toastId = toast.loading("Logging Out");
     try {
@@ -56,11 +73,11 @@ function Navbar() {
 
           <label className="swap swap-rotate mx-4 h-5 w-5">
             {/* this hidden checkbox controls the state */}
-            <input type="checkbox" />
+            <input onChange={handleMode} type="checkbox" />
 
             {/* sun icon */}
             <svg
-              className="swap-on h-6 w-6 fill-current"
+              className="swap-off h-6 w-6 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
@@ -69,7 +86,7 @@ function Navbar() {
 
             {/* moon icon */}
             <svg
-              className="swap-off h-6 w-6 fill-current"
+              className="swap-on h-6 w-6 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
@@ -90,7 +107,7 @@ function Navbar() {
                 color="danger"
                 name="Siddhesh"
                 size="md"
-                src="https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"
+                src={user?.profilePicture||"https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
