@@ -9,12 +9,12 @@ import { toast } from "react-hot-toast";
 import { addPost, getAllPosts } from "../store/postSlice";
 
 function Socialfeed() {
-  const user = useSelector(state => state.user)
-  const posts = useSelector(state => state.posts)
+  const user = useSelector((state) => state.user);
+  const posts = useSelector((state) => state.posts);
   const [postText, setPostText] = useState("");
   const [postFile, setPostFile] = useState();
-  const [posting, setPosting] = useState(false)
-  const token = localStorage.getItem("token")
+  const [posting, setPosting] = useState(false);
+  const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const dispatch = useDispatch();
   const handlePost = async (e) => {
@@ -26,43 +26,39 @@ function Socialfeed() {
       formData.append("image", postFile);
     }
     try {
-      setPosting(true)
-      const response = await axios.post(
-        `${url}/addPost`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+      setPosting(true);
+      const response = await axios.post(`${url}/addPost`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
       console.log(response);
       toast.success(response.data.message);
-      dispatch(addPost(response.data.post))
+      dispatch(addPost(response.data.post));
       setPostText("");
       setPostFile(null);
     } catch (err) {
       console.error(err);
       toast.error(err?.response?.data?.message || "An error occurred");
     } finally {
-      setPosting(false)
+      setPosting(false);
     }
   };
 
   const getPosts = async () => {
     try {
       const url = import.meta.env.VITE_BASE_URL;
-      const response = await axios.get(`${url}/getPosts`)
-      dispatch(getAllPosts(response.data.posts))
+      const response = await axios.get(`${url}/getPosts`);
+      dispatch(getAllPosts(response.data.posts));
     } catch (err) {
-      console.log(err)
-      toast.error(err.data.message)
+      console.log(err);
+      toast.error(err.data.message);
     }
-  }
+  };
   useEffect(() => {
-    getPosts()
-  }, [])
+    getPosts();
+  }, []);
 
   return (
     <>
@@ -71,7 +67,10 @@ function Socialfeed() {
           <div className="avatar w-14 md:w-20 mt-4 online">
             <div className="  mask mask-squircle ">
               <img
-                src={user?.profilePicture || "https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"}
+                src={
+                  user?.profilePicture ||
+                  "https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"
+                }
                 className="w-fit h-fit"
               />
             </div>
@@ -93,19 +92,28 @@ function Socialfeed() {
             accept="image/jpeg, image/png"
             className="hidden"
             onChange={(e) => setPostFile(e.target.files[0])}
-          // value={postFile}
+            // value={postFile}
           />
-          {
-            posting ? <div className="bg-blue-600 shadow-md shadow-blue-800 w-9 h-9 md:w-12 md:h-12 rounded-full p-3 relative top-6 md:top-6 flex justify-center items-center right-10 md:right-12 text-md md:text-3xl text-center"  ><span className="w-6 h-6 rounded-full border-l-2 border-t-2 border-white animate-spin ease-linear"></span></div> : <button onClick={handlePost} className=" bg-blue-600 shadow-md shadow-blue-800 w-9 h-9 md:w-12 md:h-12 rounded-full p-3 relative top-6 md:top-6 right-10 md:right-12 text-md md:text-3xl text-center  ">
+          {posting ? (
+            <div className="bg-blue-600 shadow-md shadow-blue-800 w-9 h-9 md:w-12 md:h-12 rounded-full p-3 relative top-6 md:top-6 flex justify-center items-center right-10 md:right-12 text-md md:text-3xl text-center">
+              <span className="w-6 h-6 rounded-full border-l-2 border-t-2 border-white animate-spin ease-linear"></span>
+            </div>
+          ) : (
+            <button
+              onClick={handlePost}
+              className=" bg-blue-600 shadow-md shadow-blue-800 w-9 h-9 md:w-12 md:h-12 rounded-full p-3 relative top-6 md:top-6 right-10 md:right-12 text-md md:text-3xl text-center  "
+            >
               <IoSend />
             </button>
-          }
+          )}
         </section>
       </div>
 
       {/* Posts */}
       <section className="mt-2 h-full w-fit flex flex-col items-center">
-        {posts.map((post) => <Posts key={post._id} post={post} />)}
+        {posts.map((post) => (
+          <Posts key={post._id} post={post} />
+        ))}
       </section>
     </>
   );
