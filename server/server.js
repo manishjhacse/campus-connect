@@ -6,11 +6,13 @@ const userRouter = require("./routes/userRoutes");
 const postRouter=require("./routes/postRoutes")
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
-const corsOptions = {
-  origin: true,
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: (origin, callback) => {
+    callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(
