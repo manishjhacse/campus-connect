@@ -4,6 +4,10 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const sendMail = require("../utills/sendEmail");
 const MailChecker = require("mailchecker");
+const {
+  uploadImageToCloudinary,
+  deleteFileFromCloudinary,
+} = require("../utills/cloudinary");
 ///Singup OTP
 exports.signupOTP = async (req, res) => {
   let savedOtp;
@@ -808,6 +812,7 @@ exports.changePassword = async (req, res) => {
 exports.editProfile = async (req, res) => {
   try {
     const { firstName, lastName, bio, mobile } = req.body;
+    const updateDetails = { firstName, lastName, bio, mobile };
     const _id = req.user._id;
     const existingUser = await User.findOne({ _id });
     if (!existingUser) {
@@ -816,15 +821,12 @@ exports.editProfile = async (req, res) => {
         message: "No user found",
       });
     }
-    const updateDetails = {};
     if (!firstName || !lastName) {
       return res.status(400).json({
         success: false,
         message: "Please Provide Details",
       });
     }
-    updateDetails = { firstName, lastName, bio, mobile };
-
     if (req.files && req.files.image) {
       const image = req.files.image;
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
@@ -837,17 +839,14 @@ exports.editProfile = async (req, res) => {
       const uploadResponse = await uploadImageToCloudinary(image, 80);
       updateDetails.profilePicture = uploadResponse;
     }
-    // update user
-    const updatedUser = await User.findOneAndUpdate(
-      { _id },
-      updateDetails,
-      { new: true }
-    );
+    const updatedUser = await User.findOneAndUpdate({ _id }, updateDetails, {
+      new: true,
+    });
 
     return res.status(200).json({
       success: true,
       message: "Profile Updated",
-      user:updatedUser
+      user: updatedUser,
     });
   } catch (err) {
     // Handle any unexpected errors

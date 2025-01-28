@@ -1,5 +1,8 @@
 const { Post } = require("../model/postModel");
-const { uploadImageToCloudinary, deleteFileFromCloudinary } = require("../utills/cloudinary");
+const {
+  uploadImageToCloudinary,
+  deleteFileFromCloudinary,
+} = require("../utills/cloudinary");
 
 exports.addpost = async (req, res) => {
   try {
@@ -28,11 +31,14 @@ exports.addpost = async (req, res) => {
       });
     }
     const post = await Post.create(postDetails);
-    const populatedPost = await post.populate("authorId", "firstName lastName profilePicture");
+    const populatedPost = await post.populate(
+      "authorId",
+      "firstName lastName profilePicture"
+    );
     return res.status(200).json({
       success: true,
       message: "Post created successfully",
-      post:populatedPost
+      post: populatedPost,
     });
   } catch (err) {
     console.error("Error creating post:", err.message);
@@ -44,11 +50,10 @@ exports.addpost = async (req, res) => {
   }
 };
 
-
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("authorId", "firstName lastName profilePicture") 
+      .populate("authorId", "firstName lastName profilePicture")
       .sort({ timestamp: -1 });
 
     if (posts.length === 0) {
@@ -71,37 +76,61 @@ exports.getPosts = async (req, res) => {
   }
 };
 
-
-exports.deletePost=async(req,res)=>{
-  try{
-    const post=req.query;
-    const autherId=req.user._id;
-    if(String(post.authorId._id)!=String(autherId)){
+exports.deletePost = async (req, res) => {
+  try {
+    const post = req.query;
+    const autherId = req.user._id;
+    if (String(post.authorId._id) != String(autherId)) {
       return res.status(401).json({
         success: false,
         message: "Unauthorized Access",
       });
     }
-   if(String(post._id)===String("6797cf7e895a6e62cf65438f"))
-   return res.status(500).json({
-      success: true,
-      message: "Land Lele Mera"
-    });
-    if(post.media){
-      await deleteFileFromCloudinary(post.media)
+    if (String(post._id) === String("6797cf7e895a6e62cf65438f"))
+      return res.status(500).json({
+        success: true,
+        message: "Land Lele Mera",
+      });
+    if (post.media) {
+      await deleteFileFromCloudinary(post.media);
     }
-    const deletedPost=await Post.findByIdAndDelete(post._id)
+    const deletedPost = await Post.findByIdAndDelete(post._id);
     return res.status(200).json({
       success: true,
       message: "Post Deleted",
-      post:deletedPost
+      post: deletedPost,
     });
-
-  }catch(err){
+  } catch (err) {
     return res.status(500).json({
       success: false,
       error: err,
       message: "Internal Server Error",
     });
   }
-}
+};
+
+exports.getUserPost = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const posts = await Post.find({ authorId: userId })
+      .populate("authorId", "firstName lastName profilePicture")
+      .sort({ timestamp: -1 });
+
+    if (posts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No posts found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal Server Error",
+    });
+  }
+};

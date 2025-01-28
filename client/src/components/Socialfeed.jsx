@@ -83,12 +83,12 @@ function Socialfeed() {
             onChange={(e) => setPostText(e.target.value)}
             value={postText}
           />
-          <label htmlFor="selectimg">
+          <label htmlFor="selecting">
             <IoMdPhotos className="w-10 h-10 md:w-12 md:h-12 relative top-5 md:top-6 right-12 md:right-14 p-2 md:p-3 cursor-pointer " />
           </label>
           <input
             type="file"
-            id="selectimg"
+            id="selecting"
             accept="image/jpeg, image/png,image/gif"
             className="hidden"
             onChange={(e) => setPostFile(e.target.files[0])}
