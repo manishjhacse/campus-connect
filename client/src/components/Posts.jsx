@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function Posts({post}) {
   const user=useSelector(state=>state.user)
   return (
-    <div className=" w-fit md:w-[450px] px-2 h-fit  mt-3 rounded-lg  bg-[#fafafa] dark:bg-[#111]  dark:text-white text-zinc-800 ">
+    <div className=" w-[95%] sm:w-[450px] px-2 h-fit  mt-3 rounded-lg  bg-[#fafafa] dark:bg-[#111]  dark:text-white text-zinc-800 ">
       <div className="flex">
         <Avatar
           className="mt-3 mr-2"
