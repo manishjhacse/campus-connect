@@ -5,7 +5,7 @@ exports.addpost = async (req, res) => {
   try {
     const { text } = req.body;
     const authorId = req.user._id;
-    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
     let postDetails = { authorId, content: text };
 
     if (req.files && req.files.image) {
