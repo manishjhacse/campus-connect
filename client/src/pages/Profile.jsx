@@ -1,18 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Posts from "../components/Posts";
 import { MdDeleteForever } from "react-icons/md";
+import { toast } from "react-hot-toast";
+import { deletePost } from "../store/postSlice";
+import axios from "axios";
 
 export default function Profile() {
   const [userPost, setUserPost] = useState([]);
+  const [isDeleting, setisDeleting] = useState(false)
   const user = useSelector((state) => state.user);
   const posts = useSelector((state) => state.posts);
+  const dispatch=useDispatch();
+  const token = localStorage.getItem("token");
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   useEffect(() => {
     const posttoShow = posts?.filter((post) => post.authorId._id === user._id);
     setUserPost(posttoShow);
   }, [posts]);
-
+  const handleDeletePost=async(post)=>{
+    setisDeleting(true)
+    const url = import.meta.env.VITE_BASE_URL;
+    try {
+      const response = await axios.delete(`${url}/deletePost`,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+        params: post,
+      });
+      toast.success(response.data.message);
+      dispatch(deletePost(post._id))
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.response?.data?.message || "An error occurred");
+    } finally {
+      setisDeleting(false);
+    }
+  }
   return (
     <div className=" flex-col items-center">
       <Navbar />
@@ -20,7 +46,7 @@ export default function Profile() {
         <div className="w-fit flex flex-col items-center gap-4">
           <div className="w-fit flex flex-col items-center ">
             <img
-              className="rounded-full h-28 "
+              className="rounded-full h-32 w-32 overflow-hidden object-cover"
               src={
                 user?.profilePicture ||
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSooCX-nPSHN0kCVdUnm-eptCPvUF04YaxeHQ&s"
@@ -89,7 +115,7 @@ export default function Profile() {
       <div className="mt-16 h-full w-full  flex flex-col items-center  ">
         {userPost?.map((post) => (
           <div key={post._id} className=" w-fit relative">
-            <button className=" absolute top-5 right-3 text-lg ">
+            <button onClick={()=>handleDeletePost(post)} className=" absolute top-5 right-3 text-lg ">
               <MdDeleteForever />
             </button>{" "}
             <Posts post={post} />{" "}

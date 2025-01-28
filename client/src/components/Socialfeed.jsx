@@ -89,10 +89,10 @@ function Socialfeed() {
           <input
             type="file"
             id="selectimg"
-            accept="image/jpeg, image/png"
+            accept="image/jpeg, image/png,image/gif"
             className="hidden"
             onChange={(e) => setPostFile(e.target.files[0])}
-            // value={postFile}
+          // value={postFile}
           />
           {posting ? (
             <div className="bg-blue-600 shadow-md shadow-blue-800 w-9 h-9 md:w-12 md:h-12 rounded-full p-3 relative top-6 md:top-6 flex justify-center items-center right-10 md:right-12 text-md md:text-3xl text-center">

@@ -1,5 +1,5 @@
 const { Post } = require("../model/postModel");
-const { uploadImageToCloudinary } = require("../utills/cloudinary");
+const { uploadImageToCloudinary, deleteFileFromCloudinary } = require("../utills/cloudinary");
 
 exports.addpost = async (req, res) => {
   try {
@@ -66,7 +66,42 @@ exports.getPosts = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: err,
-      message: "Something went wrong while fetching the posts!",
+      message: "Internal Server Error",
     });
   }
 };
+
+
+exports.deletePost=async(req,res)=>{
+  try{
+    const post=req.query;
+    const autherId=req.user._id;
+    if(String(post.authorId._id)!=String(autherId)){
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized Access",
+      });
+    }
+   if(String(post._id)===String("6797cf7e895a6e62cf65438f"))
+   return res.status(500).json({
+      success: true,
+      message: "Land Lele Mera"
+    });
+    if(post.media){
+      await deleteFileFromCloudinary(post.media)
+    }
+    const deletedPost=await Post.findByIdAndDelete(post._id)
+    return res.status(200).json({
+      success: true,
+      message: "Post Deleted",
+      post:deletedPost
+    });
+
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal Server Error",
+    });
+  }
+}

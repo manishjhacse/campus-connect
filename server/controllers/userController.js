@@ -803,3 +803,58 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
+
+// edit profile
+exports.editProfile = async (req, res) => {
+  try {
+    const { firstName, lastName, bio, mobile } = req.body;
+    const _id = req.user._id;
+    const existingUser = await User.findOne({ _id });
+    if (!existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "No user found",
+      });
+    }
+    const updateDetails = {};
+    if (!firstName || !lastName) {
+      return res.status(400).json({
+        success: false,
+        message: "Please Provide Details",
+      });
+    }
+    updateDetails = { firstName, lastName, bio, mobile };
+
+    if (req.files && req.files.image) {
+      const image = req.files.image;
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!allowedTypes.includes(image.mimetype)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid file type.",
+        });
+      }
+      const uploadResponse = await uploadImageToCloudinary(image, 80);
+      updateDetails.profilePicture = uploadResponse;
+    }
+    // update user
+    const updatedUser = await User.findOneAndUpdate(
+      { _id },
+      updateDetails,
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile Updated",
+      user:updatedUser
+    });
+  } catch (err) {
+    // Handle any unexpected errors
+    return res.status(500).json({
+      success: false,
+      message: "Internal server Error",
+      error: err.message,
+    });
+  }
+};

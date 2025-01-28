@@ -45,9 +45,7 @@ exports.deleteFileFromCloudinary = async (fileUrl) => {
 
     const url = fileUrl.split("/");
     const publicId = url.pop().split(".")[0];
-
     const result = await cloudinary.uploader.destroy(publicId);
-
     return result;
   } catch (error) {
     console.error("Error deleting file from Cloudinary:", error.message);
