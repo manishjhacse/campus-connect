@@ -13,7 +13,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(false)
   const user = useSelector((state) => state.user);
-  const [changeData, setChangeData] = useState({ firstName: user.firstName, lastName: user.lastName, bio: user.bio, mobile: user.mobile, image:""})
+  const [changeData, setChangeData] = useState({ firstName: user.firstName, lastName: user.lastName, bio: user.bio, mobile: user.mobile, image: "" })
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -44,11 +44,15 @@ export default function Profile() {
     }
   };
 
-  const handleEdit=async()=>{
-    const toastId=toast.loading("Saving...")
-    try{
-      const url=import.meta.env.VITE_BASE_URL;
-      const response=await axios.post(`${url}/editProfile`,changeData, {
+  const handleEdit = async () => {
+    if (!changeData.firstName || !changeData.lastName || changeData.firstName == "" || changeData.lastName == "") {
+      toast.error("Name is Required")
+      return;
+    }
+    const toastId = toast.loading("Saving...")
+    try {
+      const url = import.meta.env.VITE_BASE_URL;
+      const response = await axios.post(`${url}/editProfile`, changeData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -57,11 +61,11 @@ export default function Profile() {
       toast.dismiss(toastId)
       toast.success("Profile Saved")
       dispatch(changeLoggedInUser(response.data.user))
-    }catch(err){
+    } catch (err) {
       console.log(err)
       toast.dismiss(toastId)
       toast.error(err.data.message)
-    }finally{
+    } finally {
       setEditing(false)
     }
   }
@@ -114,10 +118,10 @@ export default function Profile() {
                   onChange={handleChange}
                 /></button>}
             </div>
-            {editing?<div className="flex gap-2 md:flex-row flex-col">
+            {editing ? <div className="flex gap-2 md:flex-row flex-col">
               <input type="text" className="w-fit px-2 py-2 outline-none rounded-md" onChange={handleChange} name="firstName" value={changeData.firstName} />
               <input type="text" className="w-fit px-2 py-2 outline-none rounded-md" onChange={handleChange} name="lastName" value={changeData.lastName} />
-            </div>:<input
+            </div> : <input
               className=" mx-1  px-2 py-1 font-bold text-xl font-poppins text-center rounded-lg w-fit  h-fit bg-transparent"
               type="text"
               disabled={true}
@@ -131,7 +135,7 @@ export default function Profile() {
               <div className="flex  items-center w-fit">
                 <span className="font-semibold w-14  "> Bio: </span>
                 <textarea
-                  className={`mx-1 hide-scrollbar px-2 py-1 rounded-lg w-40 h-10 ${editing?"":"bg-transparent"} outline-none`}
+                  className={`mx-1 hide-scrollbar px-2 py-1 rounded-lg w-40 h-10 ${editing ? "" : "bg-transparent"} outline-none`}
                   type="text"
                   disabled={!editing}
                   placeholder="Write Bio"
@@ -166,7 +170,7 @@ export default function Profile() {
               <div className="flex items-center  w-fit  flex-row ">
                 <span className="font-semibold w-14">mobile: </span>
                 <input
-                  className={`mx-1 hide-scrollbar px-2 py-1 rounded-lg w-40 h-10 ${editing?"":"bg-transparent"} outline-none`}
+                  className={`mx-1 hide-scrollbar px-2 py-1 rounded-lg w-40 h-10 ${editing ? "" : "bg-transparent"} outline-none`}
                   type="text"
                   disabled={!editing}
                   placeholder="Add Mobile No."
