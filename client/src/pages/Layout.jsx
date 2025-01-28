@@ -7,6 +7,8 @@ import PrivateRoute from "../components/PrivateRoute";
 import Profile from "./Profile";
 import Group from "./Group";
 import StudySession from "./StudySession";
+import UserProfile from "./UserProfile";
+import NotFound from "./NotFound";
 
 export default function Layout() {
   return (
@@ -29,6 +31,14 @@ export default function Layout() {
             </PrivateRoute>
           }
         />
+         <Route
+          path="/profile/:userId"
+          element={
+            <PrivateRoute>
+              <UserProfile/>
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/group"
           element={
@@ -45,6 +55,7 @@ export default function Layout() {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

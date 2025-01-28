@@ -45,30 +45,37 @@ export default function Profile() {
   };
 
   const handleEdit = async () => {
-    if (!changeData.firstName || !changeData.lastName || changeData.firstName == "" || changeData.lastName == "") {
-      toast.error("Name is Required")
+    if (!changeData.firstName || !changeData.lastName || changeData.firstName.trim() === "" || changeData.lastName.trim() === "") {
+      toast.error("Name is required");
       return;
     }
-    const toastId = toast.loading("Saving...")
+    const toastId = toast.loading("Saving...");
     try {
       const url = import.meta.env.VITE_BASE_URL;
-      const response = await axios.post(`${url}/editProfile`, changeData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      })
-      toast.dismiss(toastId)
-      toast.success("Profile Saved")
-      dispatch(changeLoggedInUser(response.data.user))
+      const response = await axios.post(
+        `${url}/editProfile`,
+        changeData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      toast.dismiss(toastId);
+      toast.success("Saved");
+      dispatch(changeLoggedInUser(response.data.user));
     } catch (err) {
-      console.log(err)
-      toast.dismiss(toastId)
-      toast.error(err.data.message)
+      console.error("Error saving profile:", err);
+      toast.dismiss(toastId);
+      const errorMessage = err?.response?.data?.message || "Failed to save profile";
+      toast.error(errorMessage);
     } finally {
-      setEditing(false)
+      setEditing(false);
     }
-  }
+  };
+
 
   const handleDeletePost = async (post) => {
     const toastId = toast.loading('Deleting...');

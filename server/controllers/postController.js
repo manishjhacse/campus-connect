@@ -134,3 +134,28 @@ exports.getUserPost = async (req, res) => {
     });
   }
 };
+exports.getOtherPost = async (req, res) => {
+  try {
+    const userId = req.query.userId;
+    const posts = await Post.find({ authorId: userId })
+      .populate("authorId", "firstName lastName profilePicture")
+      .sort({ timestamp: -1 });
+
+    if (posts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No posts found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal Server Error",
+    });
+  }
+};

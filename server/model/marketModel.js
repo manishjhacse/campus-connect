@@ -6,7 +6,7 @@ const marketplaceSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     availability: { type: Boolean, default: true },
-    images: [{ type: String }], // URLs for images
+    images: { type: String },
     createdAt: { type: Date, default: Date.now }
   });
 const Market=mongoose.model("Market",marketplaceSchema)

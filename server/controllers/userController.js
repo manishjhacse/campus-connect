@@ -857,3 +857,27 @@ exports.editProfile = async (req, res) => {
     });
   }
 };
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    const _id=req.query.userId
+    const user=await User.findById(_id);
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        message: "No User found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "User found",
+      user
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal server error",
+    });
+  }
+};
