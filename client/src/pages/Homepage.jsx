@@ -7,14 +7,46 @@ import Features from "../components/Features";
 import Socialfeed from "../components/Socialfeed";
 import Navbar from "../components/Navbar";
 
-const images = [
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/5_rxnguz.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129142/6_jina3v.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/3_c0zy1a.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129143/2_dbgb30.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129144/1_u8b4of.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
-  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
+const features = [
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129144/1_u8b4of.png",
+    path: "/group",
+    text: "Learn Together"
+  },
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/5_rxnguz.png",
+    path: "/",
+    text: "Coding Challenges"
+  },
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129142/6_jina3v.png",
+    path: "/",
+    text: "Jobs"
+  }
+  ,
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/3_c0zy1a.png",
+    path: "/marketPlace",
+    text: "Market Place"
+  }
+  ,
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129143/2_dbgb30.png",
+    path: "/",
+    text: "Find Roommate"
+  }
+  ,
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
+    path: "/",
+    text: "Academic Resources"
+  }
+  ,
+  {
+    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
+    path: "/",
+    text: "Feeeling Stressed"
+  }
 ];
 
 function Homepage() {
@@ -59,13 +91,13 @@ function Homepage() {
                     animate={
                       titleNumber === index
                         ? {
-                            y: 0,
-                            opacity: 1,
-                          }
+                          y: 0,
+                          opacity: 1,
+                        }
                         : {
-                            y: titleNumber > index ? -150 : 150,
-                            opacity: 0,
-                          }
+                          y: titleNumber > index ? -150 : 150,
+                          opacity: 0,
+                        }
                     }
                   >
                     {title}
@@ -92,11 +124,10 @@ function Homepage() {
 
           {/* cards */}
           <section className="w-80 md:w-2/3 h-fit flex justify-center items-center gap-10 flex-wrap">
-            {images.map((path, index) => (
+            {features.map((feature, index) => (
               <Features
                 key={index}
-                imgSrc={path}
-                altText={`Feature ${index + 1}`}
+                feature={feature}
               />
             ))}
           </section>

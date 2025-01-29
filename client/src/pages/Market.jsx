@@ -1,7 +1,10 @@
+import Navbar from "../components/Navbar"
 
 function Market() {
   return (
-    <div>Market</div>
+    <div className="overflow-hidden mx-auto w-full">
+      <Navbar />
+    </div>
   )
 }
 

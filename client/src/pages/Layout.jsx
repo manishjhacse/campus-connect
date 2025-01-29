@@ -9,6 +9,7 @@ import Group from "./Group";
 import StudySession from "./StudySession";
 import UserProfile from "./UserProfile";
 import NotFound from "./NotFound";
+import Market from "./Market";
 
 export default function Layout() {
   return (
@@ -56,10 +57,10 @@ export default function Layout() {
           }
         />
         <Route
-          path="/market"
+          path="/marketplace"
           element={
             <PrivateRoute>
-              <Profile/>
+              <Market/>
             </PrivateRoute>
           }
         />
