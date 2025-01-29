@@ -55,6 +55,14 @@ export default function Layout() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/market"
+          element={
+            <PrivateRoute>
+              <Profile/>
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

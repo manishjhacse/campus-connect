@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaMoon } from "react-icons/fa";
-import { MdOutlineWbSunny } from "react-icons/md";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import Layout from "./pages/Layout";
@@ -17,7 +15,6 @@ function App() {
       document.documentElement.classList.remove("dark");
     }
   }, [mode]);
-
 
   return (
     <>

@@ -7,6 +7,16 @@ import Features from "../components/Features";
 import Socialfeed from "../components/Socialfeed";
 import Navbar from "../components/Navbar";
 
+const images = [
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/5_rxnguz.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129142/6_jina3v.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/3_c0zy1a.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129143/2_dbgb30.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129144/1_u8b4of.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
+  "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
+];
+
 function Homepage() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(() => ["Connect", "Collaborate", "Conquer "], []);
@@ -80,14 +90,15 @@ function Homepage() {
             </span>
           </span>
 
-          <section className=" w-80 md:w-2/3 h-fit flex justify-center items-center gap-10 flex-wrap">
-            <Features />
-            <Features />
-            <Features />
-            <Features />
-            <Features />
-            <Features />
-            <Features />
+          {/* cards */}
+          <section className="w-80 md:w-2/3 h-fit flex justify-center items-center gap-10 flex-wrap">
+            {images.map((path, index) => (
+              <Features
+                key={index}
+                imgSrc={path}
+                altText={`Feature ${index + 1}`}
+              />
+            ))}
           </section>
 
           {/* Feeds section--->> */}

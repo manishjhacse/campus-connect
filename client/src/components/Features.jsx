@@ -2,16 +2,16 @@
 import React from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 
-function Features() {
+function Features({ imgSrc, altText }) {
   return (
-    <div className=" w-fit">
+    <div className="w-fit">
       <Card isFooterBlurred className="border-none" radius="lg">
         <Image
           isZoomed
-          alt="Woman listing to music"
+          alt={altText}
           className="object-cover"
           height={200}
-          src="https://nextui.org/images/hero-card.jpeg"
+          src={imgSrc}
           width={200}
         />
         <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
