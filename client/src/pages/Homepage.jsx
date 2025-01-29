@@ -106,7 +106,7 @@ function Homepage() {
               </span>
             </h1>
 
-            <div className=" text-lg md:text-xl mt-5 leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
+            <div className=" text-medium md:text-xl mt-5 leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
               <Code color="success">
                 All Your Campus Needs, in One Collaborative Space!
               </Code>
@@ -123,7 +123,7 @@ function Homepage() {
           </span>
 
           {/* cards */}
-          <section className="w-80 md:w-2/3 h-fit flex justify-center items-center gap-10 flex-wrap">
+          <section className="w-full md:w-10/12 lg:px-32 h-fit flex justify-center items-center gap-y-5 gap-x-10 flex-wrap">
             {features.map((feature, index) => (
               <Features
                 key={index}
