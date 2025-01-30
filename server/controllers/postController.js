@@ -86,11 +86,6 @@ exports.deletePost = async (req, res) => {
         message: "Unauthorized Access",
       });
     }
-    if (String(post._id) === String("6797cf7e895a6e62cf65438f"))
-      return res.status(500).json({
-        success: true,
-        message: "Land Lele Mera",
-      });
     if (post.media) {
       await deleteFileFromCloudinary(post.media);
     }

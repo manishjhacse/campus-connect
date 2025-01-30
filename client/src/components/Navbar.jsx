@@ -64,7 +64,7 @@ function Navbar() {
 
   return (
     <>
-      <div className="navbar prevent-select transition-all duration-200 fixed overflow-hidden mb-7 z-20 flex  shadow-lg bg-[#fafafa] dark:bg-[#0b0b0b] dark:text-zinc-100 text-zinc-800 ">
+      <div className="navbar prevent-select transition-all duration-200 fixed overflow-hidden mb-7 z-30 flex  shadow-lg bg-[#fafafa] dark:bg-[#0b0b0b] dark:text-zinc-100 text-zinc-800 ">
         <div className="w-full md:w-10/12 mx-auto">
           <Link to="/" className="flex-1">
             <img src={logo} className="w-20 text-red-500 transition-all duration-200" alt="" />
