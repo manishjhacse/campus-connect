@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { addPost, getAllPosts } from "../store/postSlice";
+import PostSkeleton from "./PostSkeleton";
 
 function Socialfeed() {
   const user = useSelector((state) => state.user);
   const posts = useSelector((state) => state.posts);
+  const [loading, setLoading] = useState(false)
   const [postText, setPostText] = useState("");
   const [postFile, setPostFile] = useState();
   const [posting, setPosting] = useState(false);
@@ -33,7 +35,7 @@ function Socialfeed() {
         },
         withCredentials: true,
       });
-      console.log(response);
+      // console.log(response);
       toast.success(response.data.message);
       dispatch(addPost(response.data.post));
       setPostText("");
@@ -48,12 +50,16 @@ function Socialfeed() {
 
   const getPosts = async () => {
     try {
+      setLoading(true)
       const url = import.meta.env.VITE_BASE_URL;
       const response = await axios.get(`${url}/getPosts`);
       dispatch(getAllPosts(response.data.posts));
+      
     } catch (err) {
       console.log(err);
       toast.error(err.data.message);
+    }finally{
+      setLoading(false)
     }
   };
   useEffect(() => {
@@ -111,7 +117,7 @@ function Socialfeed() {
 
       {/* Posts */}
       <section className="mt-2 h-full w-fit flex flex-col items-center">
-        {posts.map((post) => (
+        {loading?[1,2,3,4,5].map(index=><PostSkeleton key={index} />):posts.map((post) => (
           <Posts key={post._id} post={post} />
         ))}
       </section>

@@ -90,6 +90,8 @@ export default function Profile() {
       });
       toast.dismiss(toastId)
       toast.success(response.data.message);
+      const updatedUserPost=userPost.filter((p)=>p._id!=post._id)
+      setUserPost(updatedUserPost)
       dispatch(deletePost(post._id))
     } catch (err) {
       toast.dismiss(toastId)

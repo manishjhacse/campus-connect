@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import Posts from "../components/Posts";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import ProfileSkeleton from "../components/ProfileSkeleton";
+import PostSkeleton from "../components/PostSkeleton";
 
 export default function UserProfile() {
     const [userPost, setUserPost] = useState([]);
@@ -62,7 +64,8 @@ export default function UserProfile() {
         <div className=" flex-col items-center">
             <Navbar />
             <div className="flex flex-col  mx-auto items-center gap-2 w-full max-w-[1220px] pt-24">
-                {loading ? <div className="h-10 w-10 rounded-full border-t-4 border-l-4 animate-spin dark:border-white border-black"></div> : <div className="w-fit flex flex-col items-center gap-4">
+                {loading ?<ProfileSkeleton/> :
+                 <div className="w-fit flex flex-col items-center gap-4">
                     <div className="w-fit flex flex-col items-center ">
                         <div className="relative">
                             <img
@@ -137,7 +140,7 @@ export default function UserProfile() {
 
             {/* My posts */}
             <div className="my-16 h-full w-full  flex flex-col items-center  ">
-                {loading ? <div className="h-10 w-10 rounded-full border-t-4 border-l-4 animate-spin dark:border-white border-black"></div> : userPost.length > 0 ? userPost?.map((post) => (
+                {loading ? [1,2,3].map(index=><PostSkeleton key={index} />): userPost.length > 0 ? userPost?.map((post) => (
                     <div key={post._id} className=" w-fit relative">
                         <Posts post={post} />{" "}
                     </div>
