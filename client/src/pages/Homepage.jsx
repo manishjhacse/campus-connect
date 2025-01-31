@@ -32,7 +32,7 @@ const features = [
   ,
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129143/2_dbgb30.png",
-    path: "/",
+    path: "/rooms",
     text: "Find Roommate"
   }
   ,

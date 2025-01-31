@@ -1,7 +1,7 @@
 import { Code } from "@nextui-org/react";
 import { useState } from "react";
 import { IoChatbox } from "react-icons/io5";
-import { format } from 'fecha';
+// import { format } from 'fecha';
 function Products({ product }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const text = product.description

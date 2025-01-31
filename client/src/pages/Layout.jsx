@@ -10,6 +10,7 @@ import StudySession from "./StudySession";
 import UserProfile from "./UserProfile";
 import NotFound from "./NotFound";
 import Market from "./Market";
+import Roommates from "./Roommates";
 
 export default function Layout() {
   return (
@@ -61,6 +62,14 @@ export default function Layout() {
           element={
             <PrivateRoute>
               <Market/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/rooms"
+          element={
+            <PrivateRoute>
+              <Roommates/>
             </PrivateRoute>
           }
         />
