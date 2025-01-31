@@ -16,7 +16,7 @@ function RoomnateCard() {
           <div className=" flex text-xs flex-wrap md:text-sm gap-1 justify-between">
             <p className="flex md:flex-col-reverse flex-row">
               <span className=" font-semibold">₹5000</span>
-              <span className=" opacity-50">Rent/Person</span>
+              <span className=" opacity-50 ml-1 md:ml-0">Rent/Person</span>
             </p>
             <p>
               <span className=" opacity-50">Looking for</span> <br />{" "}
