@@ -6,7 +6,7 @@ function RoomnateCard() {
     <div>
       <div className="card card-side transition-all duration-200 shadow-xl m-4 w-[310px] h-[200px] p-0 md:w-[550px] md:h-[220px]  bg-[#fafafa] dark:bg-[#111]">
         <img
-          src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+          src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"  
           alt="roomImage"
           className="h-[200px] md:h-full w-[150px] md:w-[200px] object-cover rounded-md"
         />
