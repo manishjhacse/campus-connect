@@ -10,7 +10,12 @@ import StudySession from "./StudySession";
 import UserProfile from "./UserProfile";
 import NotFound from "./NotFound";
 import Market from "./Market";
+<<<<<<< Updated upstream
 import Roommates from "./Roommates";
+=======
+import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
+>>>>>>> Stashed changes
 
 export default function Layout() {
   return (
@@ -29,15 +34,15 @@ export default function Layout() {
           path="/profile"
           element={
             <PrivateRoute>
-              <Profile/>
+              <Profile />
             </PrivateRoute>
           }
         />
-         <Route
+        <Route
           path="/profile/:userId"
           element={
             <PrivateRoute>
-              <UserProfile/>
+              <UserProfile />
             </PrivateRoute>
           }
         />
@@ -45,7 +50,7 @@ export default function Layout() {
           path="/group"
           element={
             <PrivateRoute>
-              <Group/>
+              <Group />
             </PrivateRoute>
           }
         />
@@ -53,7 +58,7 @@ export default function Layout() {
           path="/group/:roomId"
           element={
             <PrivateRoute>
-              <StudySession/>
+              <StudySession />
             </PrivateRoute>
           }
         />
@@ -61,18 +66,20 @@ export default function Layout() {
           path="/marketplace"
           element={
             <PrivateRoute>
-              <Market/>
+              <Market />
             </PrivateRoute>
           }
         />
         <Route
-          path="/rooms"
+          path="/adminLogin"
           element={
-            <PrivateRoute>
-              <Roommates/>
-            </PrivateRoute>
-          }
-        />
+            <AdminLogin />
+          } />
+        <Route
+          path="/adminDashboard"
+          element={
+            <AdminDashboard />
+          } />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

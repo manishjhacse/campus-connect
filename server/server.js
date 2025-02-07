@@ -5,6 +5,7 @@ const app = express();
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const marketRouter = require("./routes/marketRoutes");
+const adminRouter = require("./routes/adminRoutes");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 app.use(
@@ -28,6 +29,7 @@ require("./config/connectDB").connectDB();
 app.use("/api", userRouter);
 app.use("/api", postRouter);
 app.use("/api", marketRouter);
+app.use("/api", adminRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port:${PORT}`);
