@@ -10,12 +10,8 @@ import StudySession from "./StudySession";
 import UserProfile from "./UserProfile";
 import NotFound from "./NotFound";
 import Market from "./Market";
-<<<<<<< Updated upstream
-import Roommates from "./Roommates";
-=======
 import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
->>>>>>> Stashed changes
 
 export default function Layout() {
   return (
