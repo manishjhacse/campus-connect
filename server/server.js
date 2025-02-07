@@ -8,12 +8,29 @@ const marketRouter = require("./routes/marketRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const { Server } = require("socket.io");
+const http = require("http");
+const socketHandler = require("./socketHandler");
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "https://bpmce-community.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  },
+});
+
+// Handle WebSocket connections
+socketHandler(io);
+
 app.use(
   cors({
-    origin: (origin, callback) => {
-      callback(null, true);
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: ["http://localhost:5173", "https://bpmce-community.vercel.app"],
+    methods: ["POST", "GET"],
     credentials: true,
   })
 );
@@ -23,14 +40,20 @@ app.use(
   fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/",
+    limits: { fileSize: 10 * 1024 * 1024 },
+    safeFileNames: true,
+    abortOnLimit: true,
   })
 );
 require("./config/connectDB").connectDB();
+
+// Routes
 app.use("/api", userRouter);
 app.use("/api", postRouter);
 app.use("/api", marketRouter);
 app.use("/api", adminRouter);
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port:${PORT}`);
 });
