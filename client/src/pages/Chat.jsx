@@ -110,7 +110,7 @@ function Chat() {
           const isUserMessage = loggedInUser._id === messageContent.senderId;
           return (
             <div key={index} className={`chat ${isUserMessage ? "chat-end" : "chat-start"}`}>
-              <div className="chat-bubble bg-blue-600 text-white px-3 py-2 max-w-xs sm:max-w-sm">
+              <div className={`chat-bubble ${isUserMessage ? "bg-blue-600" : "bg-green-600"}  text-white px-3 py-2 max-w-xs sm:max-w-sm`}>
                 <p className="break-words text-sm">{messageContent.message}</p>
               </div>
               <div className="chat-footer text-xs text-gray-400 mt-1">

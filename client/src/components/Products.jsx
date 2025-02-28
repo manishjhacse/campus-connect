@@ -18,7 +18,6 @@ function Products({ product }) {
   const navigate=useNavigate()
   const text = product.description
   const loggedInUser = useSelector((store) => store.user);
-  console.log(loggedInUser, product)
   useEffect(() => {
     if (loggedInUser?._id === product?.sellerId?._id) {
       SetisUser(true);
