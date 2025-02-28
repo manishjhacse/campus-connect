@@ -33,7 +33,7 @@ function Products({ product }) {
     let chattingWith = "";
     try {
       const roomId = product?._id;
-      const ownerName = product?.sellerId?.firstName;
+      const ownerName = product?.sellerId?.firstName+" "+product?.sellerId?.lastName;
       const ownerId = product?.sellerId?._id;
       if (isUser) {
         try {
@@ -75,7 +75,7 @@ function Products({ product }) {
       }
       try {
         navigate(`/chat/${chatId}/${loggedInUser?._id}`, {
-          state: { name: loggedInUser?.firstName+loggedInUser?.lastName, chattingWith: chattingWith },
+          state: { name: loggedInUser?.firstName+" "+loggedInUser?.lastName, chattingWith: chattingWith },
         });
         toast.dismiss(toastID)
         toast.success("Start chatting");
@@ -95,7 +95,7 @@ function Products({ product }) {
     const chattingWith = list.interestedName;
     try {
       const roomId = product?._id;
-      const ownerId = room?.sellerId?._id;;
+      const ownerId = product?.sellerId?._id;;
       let chatId = "";
       try {
         const res = await axios.get(`${url}/getchatid`, {
@@ -111,7 +111,7 @@ function Products({ product }) {
       }
       try {
         navigate(`/chat/${chatId}/${loggedInUser?._id}`, {
-          state: { name: loggedInUser?.firstName+loggedInUser?.lastName, chattingWith: chattingWith },
+          state: { name: loggedInUser?.firstName+" "+loggedInUser?.lastName, chattingWith: chattingWith },
         });
       } catch (err) {
         console.log(err);
@@ -167,7 +167,7 @@ function Products({ product }) {
       </div>
       {/* chatlist */}
       {showChatList && (
-        <div className="bg-black shadow-md shadow-white h-[500px] absolute w-[300px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-3 overflow-auto rounded-md max-h-full z-20">
+        <div className="bg-black shadow-md shadow-white h-[500px] absolute w-[300px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-3 overflow-auto rounded-md max-h-full z-20">
           {chatList?.map((list) => {
             return (
               <div
