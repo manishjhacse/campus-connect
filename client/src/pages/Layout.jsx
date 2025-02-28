@@ -12,6 +12,7 @@ import NotFound from "./NotFound";
 import Market from "./Market";
 import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
+import Chat from "./Chat";
 
 export default function Layout() {
   return (
@@ -66,6 +67,14 @@ export default function Layout() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/chat"
+          element={
+            <PrivateRoute>
+              <Chat/>
+            </PrivateRoute>
+          }
+          />
         <Route
           path="/adminLogin"
           element={
