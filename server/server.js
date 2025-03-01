@@ -6,6 +6,7 @@ const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const marketRouter = require("./routes/marketRoutes");
 const adminRouter = require("./routes/adminRoutes");
+const roomRouter = require("./routes/roomRoutes");
 const chatRouter = require("./routes/chatRoutes");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
@@ -20,7 +21,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173", "https://bpmce-community.vercel.app"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET","DELETE"],
     credentials: true,
   },
 });
@@ -31,7 +32,7 @@ socketHandler(io);
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://bpmce-community.vercel.app"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET","DELETE"],
     credentials: true,
   })
 );
@@ -54,6 +55,7 @@ app.use("/api", postRouter);
 app.use("/api", marketRouter);
 app.use("/api", adminRouter);
 app.use("/api", chatRouter);
+app.use("/api", roomRouter);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

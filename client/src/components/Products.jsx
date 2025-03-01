@@ -7,15 +7,15 @@ import { MdDelete } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-function Products({ product }) {
+function Products({ product,setProduct,setProductsToShow }) {
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  const url= import.meta.env.VITE_BASE_URL;
+  const url = import.meta.env.VITE_BASE_URL;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isUser, SetisUser] = useState(false);
   const [showChatList, setShowChatList] = useState(false);
   const [chatList, setChatList] = useState([]);
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const text = product.description
   const loggedInUser = useSelector((store) => store.user);
   useEffect(() => {
@@ -27,12 +27,12 @@ function Products({ product }) {
   }, []);
 
   const handleChat = async () => {
-    const toastID=toast.loading("Please wait...");
+    const toastID = toast.loading("Please wait...");
     let chatId = "";
     let chattingWith = "";
     try {
       const roomId = product?._id;
-      const ownerName = product?.sellerId?.firstName+" "+product?.sellerId?.lastName;
+      const ownerName = product?.sellerId?.firstName + " " + product?.sellerId?.lastName;
       const ownerId = product?.sellerId?._id;
       if (isUser) {
         try {
@@ -49,6 +49,7 @@ function Products({ product }) {
           console.log(err);
         }
         toast.dismiss(toastID)
+        toast.success("Chats found")
         return;
       }
       const res = await axios.get(`${url}/ischatexist`, {
@@ -74,7 +75,7 @@ function Products({ product }) {
       }
       try {
         navigate(`/chat/${chatId}/${loggedInUser?._id}`, {
-          state: { name: loggedInUser?.firstName+" "+loggedInUser?.lastName, chattingWith: chattingWith },
+          state: { name: loggedInUser?.firstName + " " + loggedInUser?.lastName, chattingWith: chattingWith },
         });
         toast.dismiss(toastID)
         toast.success("Start chatting");
@@ -110,7 +111,7 @@ function Products({ product }) {
       }
       try {
         navigate(`/chat/${chatId}/${loggedInUser?._id}`, {
-          state: { name: loggedInUser?.firstName+" "+loggedInUser?.lastName, chattingWith: chattingWith },
+          state: { name: loggedInUser?.firstName + " " + loggedInUser?.lastName, chattingWith: chattingWith },
         });
       } catch (err) {
         console.log(err);
@@ -120,13 +121,36 @@ function Products({ product }) {
     }
   };
 
+  const handleDeleteProduct = async () => {
+    const toastId = toast.loading('Deleting...');
+    const url = import.meta.env.VITE_BASE_URL;
+    console.log(url)
+    try {
+      const response = await axios.delete(`${url}/deleteProduct`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+        params: product,
+      });
+      setProductsToShow((prev) => prev.filter((p) => p._id !== product._id));
+      setProduct((prev) => prev.filter((p) => p._id !== product._id));
+      toast.dismiss(toastId)
+      toast.success(response.data.message);
+    } catch (err) {
+      toast.dismiss(toastId)
+      console.error(err);
+      toast.error(err?.response?.data?.message || "An error occurred");
+    }
+  }
+
   const shortText = text.slice(0, 40);
   return (
-    <div className="mt-10 ">
+    <div className="mt-10 relative">
       <div className="card md:w-80  max-w-80 mx-3 shadow-xl  bg-[#fafafa] dark:bg-[#111] font-poppins">
         <figure>
           <img className="h-40 w-full object-cover"
-            src={product.image}
+            src={product.image||"https://res.cloudinary.com/dfrcswf0n/image/upload/v1740833963/pngtree-no-image-vector-illustration-isolated-png-image_4979075_aivery.jpg"}
             alt="Shoes"
           />
         </figure>
@@ -166,23 +190,33 @@ function Products({ product }) {
       </div>
       {/* chatlist */}
       {showChatList && (
-        <div className="bg-black shadow-md shadow-white h-[500px] absolute w-[300px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-3 overflow-auto rounded-md max-h-full z-20">
-          {chatList?.map((list) => {
-            return (
+        <div className="dark:bg-black bg-white shadow-lg dark:shadow-white shadow-black h-[500px] fixed  w-[320px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-4 overflow-auto rounded-lg max-h-full z-20 transition-all duration-200 dark:text-white text-black border border-gray-300 dark:border-gray-700">
+          <div className="text-lg font-semibold mb-3 text-center">Chats</div>
+
+          {chatList?.length > 0 ? (
+            chatList.map((list) => (
               <div
-                className="cursor-pointer uppercase"
-                onClick={() => handleChatByUser(list)}
                 key={list.interestedId}
+                className="cursor-pointer uppercase p-2 mb-2 bg-green-300 dark:bg-green-700 rounded-md hover:bg-green-500 dark:hover:bg-green-800 transition font-bold"
+                onClick={() => handleChatByUser(list)}
               >
                 {list.interestedName}
               </div>
-            );
-          })}
-          <div onClick={()=>setShowChatList(false)} className="top-2 cursor-pointer text-xl absolute right-2">
+            ))
+          ) : (
+            <p className="text-center text-gray-500 dark:text-gray-400 mt-10">No messages available</p>
+          )}
+
+          <div
+            onClick={() => setShowChatList(false)}
+            className="top-2 right-2 cursor-pointer text-2xl absolute text-gray-600 dark:text-gray-400 hover:text-red-500 transition"
+          >
             <MdCancel />
           </div>
         </div>
       )}
+
+      {isUser && <button onClick={handleDeleteProduct} className="absolute top-2 right-4 text-2xl text-red-700"><MdDelete /></button>}
     </div>
   );
 }

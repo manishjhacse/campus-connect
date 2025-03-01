@@ -403,9 +403,9 @@ export default function App() {
       </div>
       <Table
         aria-label="LeetCode Problems Table"
-        className="p-1 md:p-4 mt-2 font-poppins"
+        className="p-1 md:p-4 mt-2 font-poppins "
         bottomContent={
-          <div className="flex w-full justify-center">
+          <div className="flex w-full justify-center ">
             <Pagination
               isCompact
               showControls
@@ -418,7 +418,7 @@ export default function App() {
           </div>
         }
         classNames={{
-          wrapper: "min-h-[222px]",
+          wrapper: "min-h-[222px] bg-transparent shadow-none",
         }}
       >
         <TableHeader className="rounded-xl">
@@ -439,7 +439,7 @@ export default function App() {
                 </Chip>
               </TableCell>
               <TableCell>
-                <Chip color={getDifficultyColor(item.difficulty)}>
+                <Chip className="min-w-20 rounded-md text-center text-sm font-bold" color={getDifficultyColor(item.difficulty)}>
                   {item.difficulty}
                 </Chip>
               </TableCell>

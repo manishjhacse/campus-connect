@@ -15,7 +15,7 @@ const features = [
   },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/5_rxnguz.png",
-    path: "/",
+    path: "/codingpractice",
     text: "Coding Challenges",
   },
   {

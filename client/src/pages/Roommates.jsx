@@ -1,26 +1,82 @@
+import axios from "axios";
 import Navbar from "../components/Navbar";
 import RoomnateCard from "../components/RoomnateCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
+import RoomCardSkelton from "../components/RoomCardSkelton";
+import { toast } from "react-hot-toast";
 
 function Roommates() {
+  const token = localStorage.getItem("token");
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   const [formData, setFormData] = useState({
-    productName: "",
-    description: "",
+    gender: "",
     price: "",
     image: null,
-    category: "",
+    location: "",
+    smoking: ""
   });
-
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);
+  const getAllRooms = async () => {
+    const url = import.meta.env.VITE_BASE_URL;
+    try {
+      setLoading(true);
+      const response = await axios.get(`${url}/getRooms`);
+      setRooms(response.data.rooms || []);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to fetch Rooms!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const url = import.meta.env.VITE_BASE_URL;
+    if (!formData.gender || !formData.price || !formData.location || !formData.smoking) {
+      toast.error("Required fields missing");
+      return;
+    }
+
+    let toastID = toast.loading("Adding Room");
+
+    try {
+
+      const response = await axios.post(`${url}/addRoom`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+
+      toast.dismiss(toastID);
+      toast.success(response.data.message);
+      setRooms((prevRooms) => [response.data.room, ...prevRooms]);
+      setFormData({
+        gender: "",
+        price: "",
+        image: null,
+        location: "",
+        smoking: ""
+      });
+    } catch (err) {
+      console.error(err);
+      toast.dismiss(toastID);
+      toast.error(err.response?.data?.message || "Something went wrong!");
+    }
+    document.getElementById("my_modal_2").close()
+  };
+  useEffect(() => {
+    getAllRooms()
+  }, [])
   const handleFileChange = (e) => {
     setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
   };
@@ -45,7 +101,7 @@ function Roommates() {
               List your Room
             </h3>
             <form
-              // onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
               className="flex items-start flex-col gap-3 p-5 mt-5"
             >
               <div
@@ -57,7 +113,7 @@ function Roommates() {
               </div>
 
               {/* Product Name */}
-              <div className="w-10/12 flex flex-col md:flex-row md:justify-between">
+              {/* <div className="w-10/12 flex flex-col md:flex-row md:justify-between">
                 <label htmlFor="productName" className="font-poppins text-lg">
                   Name:
                 </label>
@@ -68,7 +124,7 @@ function Roommates() {
                   type="text"
                   className="md:mx-2 p-1 w-[229.6px] md:w-[188.8px] rounded-md outline-none bg-gray-200 dark:bg-[#1f1f1f]"
                 />
-              </div>
+              </div> */}
 
               {/* Location */}
               <div className="w-10/12 flex flex-col md:flex-row md:justify-between">
@@ -77,8 +133,8 @@ function Roommates() {
                 </label>
                 <input
                   onChange={handleChange}
-                  name="description"
-                  value={formData.description}
+                  name="location"
+                  value={formData.location}
                   type="text"
                   className="md:mx-2 p-1 w-[229.6px] md:w-[188.8px] rounded-md outline-none bg-gray-200 dark:bg-[#1f1f1f]"
                 />
@@ -110,8 +166,8 @@ function Roommates() {
                 </label>
                 <select
                   onChange={handleChange}
-                  name="category"
-                  value={formData.category}
+                  name="gender"
+                  value={formData.gender}
                   className="md:mx-2 p-1 rounded-md outline-none w-[229.6px] md:w-[188.8px] bg-gray-200 dark:bg-[#1f1f1f]"
                 >
                   <option value="" disabled hidden>
@@ -125,19 +181,19 @@ function Roommates() {
               {/* Category Selection */}
               <div className="w-10/12 flex flex-col md:flex-row md:justify-between">
                 <label htmlFor="category" className="font-poppins text-lg">
-                  Smoke/Drink:
+                  Smoking:
                 </label>
                 <select
                   onChange={handleChange}
-                  name="category"
-                  value={formData.category}
+                  name="smoking"
+                  value={formData.smoking}
                   className="md:mx-2 p-1 rounded-md outline-none w-[229.6px] md:w-[188.8px] bg-gray-200 dark:bg-[#1f1f1f]"
                 >
                   <option value="" disabled hidden>
                     Select a category
                   </option>
                   <option value="Allowed">Allowed</option>
-                  <option value="NotAllowed">Not allowed</option>
+                  <option value="Not Allowed">Not allowed</option>
                 </select>
               </div>
 
@@ -161,11 +217,11 @@ function Roommates() {
             <button>close</button>
           </form>
         </dialog>
-        <div className=" flex flex-wrap gap-1 justify-center">
-          <RoomnateCard />
-          <RoomnateCard />
-          <RoomnateCard />
-          <RoomnateCard />
+        <div className="flex md:gap-3 flex-wrap justify-center mx-auto w-full">
+          {loading ? [...Array(8)].map((index) => (
+            <RoomCardSkelton key={index} />
+          )) : (rooms.length > 0 ? rooms.map(room => <RoomnateCard key={room._id} room={room} setRooms={setRooms} />) : <div className="w-full h-[80vh] flex justify-center items-center text-xl">No Rooms Available!</div>)
+          }
         </div>
       </div>
     </div>

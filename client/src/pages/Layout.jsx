@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import Homepage from "./Homepage";
 import PrivateRoute from "../components/PrivateRoute";
@@ -15,8 +15,14 @@ import AdminDashboard from "./AdminDashboard";
 import Chat from "./Chat";
 import Problems from "./Problems";
 import Roommates from "./Roommates";
+import Footer from "../components/Footer";
 
 export default function Layout() {
+  const location = useLocation();
+  const hideFooterRoutes = ["/group", "/group/:roomId"];
+  const hideFooter = hideFooterRoutes.some((route) =>
+    location.pathname.startsWith(route.replace(":roomId", ""))
+  );
   return (
     <div className="w-full h-full">
       <Routes>
@@ -78,7 +84,7 @@ export default function Layout() {
           }
         />
         <Route
-          path="/problems"
+          path="/codingpractice"
           element={
             <PrivateRoute>
               <Problems />
@@ -97,6 +103,7 @@ export default function Layout() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {!hideFooter && <Footer />}
     </div>
   );
 }

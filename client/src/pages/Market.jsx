@@ -83,6 +83,7 @@ function Market() {
       toast.dismiss(toastID);
       toast.error(err.response?.data?.message || "Something went wrong!");
     }
+    document.getElementById("my_modal_2").close()
   };
   const handleFilter = () => {
     if (category === "All") {
@@ -241,7 +242,7 @@ function Market() {
       <div className="flex md:gap-3 flex-wrap justify-center mx-auto w-full">
         {loading ? [...Array(8)].map((index) => (
           <ProductSkeleton key={index} />
-        )) : (productsToShow.length > 0 ? productsToShow.map(p => <Products key={p._id} product={p} />) : <div className="w-full h-[80vh] flex justify-center items-center text-xl">No Products Found!</div>)
+        )) : (productsToShow.length > 0 ? productsToShow.map(p => <Products setProduct={setProduct} setProductsToShow={setProductsToShow} key={p._id} product={p} />) : <div className="w-full h-[80vh] flex justify-center items-center text-xl">No Products Found!</div>)
         }
       </div>
     </div>

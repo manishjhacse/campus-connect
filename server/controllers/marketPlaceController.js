@@ -80,3 +80,32 @@ exports.getItems = async (req, res) => {
     });
   }
 };
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const product = req.query;
+    const autherId = req.user._id;
+    if (String(product.sellerId._id) != String(autherId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized Access",
+      });
+    }
+    if (product.image) {
+      await deleteFileFromCloudinary(product.image);
+    }
+    const deletedProduct = await Market.findByIdAndDelete(product._id);
+    return res.status(200).json({
+      success: true,
+      message: "Product Deleted",
+      product: deletedProduct,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal Server Error",
+    });
+  }
+};
+
