@@ -13,6 +13,7 @@ import Market from "./Market";
 import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import Chat from "./Chat";
+import Problems from "./Problems";
 import Roommates from "./Roommates";
 
 export default function Layout() {
@@ -72,27 +73,28 @@ export default function Layout() {
           path="/chat/:chatId/:userId"
           element={
             <PrivateRoute>
-              <Chat/>
+              <Chat />
             </PrivateRoute>
           }
-          />
+        />
         <Route
-          path="/adminLogin"
+          path="/problems"
           element={
-            <AdminLogin />
-          } />
-        <Route
-          path="/adminDashboard"
-          element={
-            <AdminDashboard />
-          } />
+            <PrivateRoute>
+              <Problems />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/adminLogin" element={<AdminLogin />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route
           path="/rooms"
           element={
-           <PrivateRoute>
-            <Roommates/>
-           </PrivateRoute>
-          } />
+            <PrivateRoute>
+              <Roommates />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
