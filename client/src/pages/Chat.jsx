@@ -6,7 +6,13 @@ function Chat() {
     <div className="w-full h-full ">
       <Navbar />
       <div className=" flex justify-center items-center">
-        <h1 className="text-xl font-semibold mt-20 mb-4">Chat</h1>
+        <span className="relative inline-flex sm:inline mt-24">
+          <span className="bg-gradient-to-r from-[#ffef44] via-[#ff4a44] to-[#5658ee] blur-xl  filter opacity-40 w-full h-full absolute inset-0"></span>
+          <span className="relative text-xl md:text-3xl  tracking-tighter text-center font-poppins">
+            {" "}
+            Chat💬{" "}
+          </span>
+        </span>
       </div>
       <section className="h-full ">
         <div className="chat chat-start">

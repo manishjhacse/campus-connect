@@ -11,42 +11,38 @@ const features = [
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129144/1_u8b4of.png",
     path: "/group",
-    text: "Learn Together"
+    text: "Learn Together",
   },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/5_rxnguz.png",
     path: "/",
-    text: "Coding Challenges"
+    text: "Coding Challenges",
   },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129142/6_jina3v.png",
     path: "/",
-    text: "Jobs"
-  }
-  ,
+    text: "Jobs",
+  },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/3_c0zy1a.png",
     path: "/marketPlace",
-    text: "Market Place"
-  }
-  ,
+    text: "Market Place",
+  },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129143/2_dbgb30.png",
     path: "/rooms",
-    text: "Find Roommate"
-  }
-  ,
+    text: "Find Roommate",
+  },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
     path: "/",
-    text: "Academic Resources"
-  }
-  ,
+    text: "Academic Resources",
+  },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
     path: "/",
-    text: "Feeeling Stressed"
-  }
+    text: "Feeeling Stressed",
+  },
 ];
 
 function Homepage() {
@@ -91,13 +87,13 @@ function Homepage() {
                     animate={
                       titleNumber === index
                         ? {
-                          y: 0,
-                          opacity: 1,
-                        }
+                            y: 0,
+                            opacity: 1,
+                          }
                         : {
-                          y: titleNumber > index ? -150 : 150,
-                          opacity: 0,
-                        }
+                            y: titleNumber > index ? -150 : 150,
+                            opacity: 0,
+                          }
                     }
                   >
                     {title}
@@ -125,10 +121,7 @@ function Homepage() {
           {/* cards */}
           <section className="w-full md:w-10/12 lg:px-32 h-fit flex justify-center items-center gap-y-5 gap-x-10 flex-wrap">
             {features.map((feature, index) => (
-              <Features
-                key={index}
-                feature={feature}
-              />
+              <Features key={index} feature={feature} />
             ))}
           </section>
 
