@@ -434,7 +434,7 @@ export default function App() {
                 {item.title}
               </TableCell>
               <TableCell>
-                <Chip color="primary">{item.topic}</Chip>
+                <Chip color="success" variant="dot" size="">{item.topic}</Chip>
               </TableCell>
               <TableCell>
                 <Chip color={getDifficultyColor(item.difficulty)}>

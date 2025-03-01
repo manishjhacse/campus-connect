@@ -73,35 +73,28 @@ export default function Layout() {
           path="/chat/:chatId/:userId"
           element={
             <PrivateRoute>
-              <Chat/>
+              <Chat />
             </PrivateRoute>
           }
-          />
+        />
         <Route
           path="/problems"
           element={
             <PrivateRoute>
-              <Problems/>
+              <Problems />
             </PrivateRoute>
           }
-          />
-        <Route
-          path="/adminLogin"
-          element={
-            <AdminLogin />
-          } />
-        <Route
-          path="/adminDashboard"
-          element={
-            <AdminDashboard />
-          } />
+        />
+        <Route path="/adminLogin" element={<AdminLogin />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route
           path="/rooms"
           element={
-           <PrivateRoute>
-            <Roommates/>
-           </PrivateRoute>
-          } />
+            <PrivateRoute>
+              <Roommates />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
