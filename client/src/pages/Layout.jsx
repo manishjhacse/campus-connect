@@ -16,6 +16,7 @@ import Chat from "./Chat";
 import Problems from "./Problems";
 import Roommates from "./Roommates";
 import Footer from "../components/Footer";
+import Jobs from "./Jobs";
 
 export default function Layout() {
   const location = useLocation();
@@ -72,6 +73,14 @@ export default function Layout() {
           element={
             <PrivateRoute>
               <Market />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/jobs"
+          element={
+            <PrivateRoute>
+              <Jobs/>
             </PrivateRoute>
           }
         />

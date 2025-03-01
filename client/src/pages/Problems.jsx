@@ -439,7 +439,10 @@ export default function App() {
                 </Chip>
               </TableCell>
               <TableCell>
-                <Chip className="min-w-20 rounded-md text-center text-sm font-bold" color={getDifficultyColor(item.difficulty)}>
+                <Chip
+                  className="min-w-20 rounded-md text-center text-sm font-bold"
+                  color={getDifficultyColor(item.difficulty)}
+                >
                   {item.difficulty}
                 </Chip>
               </TableCell>
