@@ -14,6 +14,7 @@ import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import Chat from "./Chat";
 import Problems from "./Problems";
+import Roommates from "./Roommates";
 
 export default function Layout() {
   return (
@@ -69,7 +70,7 @@ export default function Layout() {
           }
         />
         <Route
-          path="/chat"
+          path="/chat/:chatId/:userId"
           element={
             <PrivateRoute>
               <Chat/>
@@ -93,6 +94,13 @@ export default function Layout() {
           path="/adminDashboard"
           element={
             <AdminDashboard />
+          } />
+        <Route
+          path="/rooms"
+          element={
+           <PrivateRoute>
+            <Roommates/>
+           </PrivateRoute>
           } />
         <Route path="*" element={<NotFound />} />
       </Routes>
