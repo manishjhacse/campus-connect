@@ -101,7 +101,7 @@ function Chat() {
 
   return (
     <div className="w-full h-full">
-      <Navbar/>
+      <Navbar />
       <div className="flex justify-center pt-20 items-center">
         <h1 className="text-xl font-semibold mb-4">{`Chatting with ${chattingWith}`}</h1>
       </div>
@@ -123,7 +123,7 @@ function Chat() {
       </section>
       {/* Send Message Input */}
       <div className=" flex justify-center items-center fixed bottom-0 w-full p-2">
-         <input
+        <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -135,7 +135,7 @@ function Chat() {
           placeholder="Send Message..."
           className="input mx-1 input-bordered rounded-full w-full max-w-xs dark:bg-slate-800 bg-white shadow-md text-black dark:text-white active:outline-none focus:outline-none"
         />
-        <button  onClick={handleSend} className=" bg-blue-600 shadow-md shadow-blue-800 w-10 h-10 md:w-11 md:h-11 rounded-full p-3 relative text-xl md:text-2xl text-center text-white mx-1">
+        <button onClick={handleSend} className=" bg-blue-600 shadow-md shadow-blue-800 w-10 h-10 md:w-11 md:h-11 rounded-full p-3 relative text-xl md:text-2xl text-center text-white mx-1">
           <IoSend />
         </button>
       </div>
