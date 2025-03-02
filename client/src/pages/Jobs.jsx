@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Modal,
   ModalContent,
@@ -7,9 +8,11 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
+  Textarea,
 } from "@heroui/react";
 import Navbar from "../components/Navbar";
-
+import { FaPlusCircle } from "react-icons/fa";
 const jobs = [
   {
     id: 1,
@@ -106,7 +109,7 @@ const JobCard = ({ job }) => {
         Details
       </Button>
       <Modal isOpen={isOpen} size="3xl" onOpenChange={onOpenChange}>
-        <ModalContent>
+        <ModalContent className="text-black dark:text-white pt-4">
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
@@ -144,10 +147,11 @@ const JobCard = ({ job }) => {
 };
 
 const JobPortal = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-black dark:text-white">
       <Navbar />
-      <div className=" flex justify-center items-center mb-8 ">
+      <div className=" flex justify-center items-center mb-8">
         <span className="relative inline-flex sm:inline mt-24">
           <span className="bg-gradient-to-r from-[#ffef44] via-[#ff4a44] to-[#FF675E] blur-xl  filter opacity-40 w-full h-full absolute inset-0"></span>
           <span className="relative text-xl md:text-3xl tracking-tighter text-center font-poppins">
@@ -156,6 +160,44 @@ const JobPortal = () => {
           </span>
         </span>
       </div>
+
+      {/* add Jobs section---->>>> */}
+      <div className=" flex justify-center items-center mb-3">
+        <Button
+          color="success"
+          onPress={onOpen}
+          className=" text-sm md:text-lg font-semibold w-28 md:w-32 h-8 md:h-10"
+        >
+          <FaPlusCircle />
+          Add Job
+        </Button>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent className="text-black dark:text-white pt-3">
+            {(onClose) => (
+              <>
+                <ModalHeader>Add New Job</ModalHeader>
+                <ModalBody>
+                  <Input placeholder="Job Title" />
+                  <Input placeholder="Company" />
+                  <Input placeholder="Location" />
+                  <Input placeholder="Salary" />
+                  <Textarea placeholder="Description" />
+                  <Input placeholder="Qualifications" />
+                  <Input placeholder="Skills" />
+                  <Input placeholder="Apply Link" />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cancel
+                  </Button>
+                  <Button color="primary">Save</Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
+
       <div className="max-w-4xl mx-auto space-y-4 ">
         {jobs.map((job) => (
           <JobCard key={job.id} job={job} />

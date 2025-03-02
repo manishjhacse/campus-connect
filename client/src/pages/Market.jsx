@@ -8,10 +8,10 @@ import ProductSkeleton from "../components/ProductSkeleton";
 
 function Market() {
   const token = localStorage.getItem("token");
-  const [category, setCategory] = useState("All")
+  const [category, setCategory] = useState("All");
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState([]);
-  const [productsToShow, setProductsToShow] = useState([])
+  const [productsToShow, setProductsToShow] = useState([]);
   const [formData, setFormData] = useState({
     productName: "",
     description: "",
@@ -28,7 +28,7 @@ function Market() {
       setLoading(true);
       const response = await axios.get(`${url}/getItems`);
       setProduct(response.data.products || []);
-      setProductsToShow(response.data.products || [])
+      setProductsToShow(response.data.products || []);
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Failed to fetch products!");
@@ -59,7 +59,6 @@ function Market() {
     let toastID = toast.loading("Adding Item");
 
     try {
-
       const response = await axios.post(`${url}/addItem`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -83,20 +82,20 @@ function Market() {
       toast.dismiss(toastID);
       toast.error(err.response?.data?.message || "Something went wrong!");
     }
-    document.getElementById("my_modal_2").close()
+    document.getElementById("my_modal_2").close();
   };
   const handleFilter = () => {
     if (category === "All") {
-      setProductsToShow(product)
+      setProductsToShow(product);
     } else {
-      const filteredProduct = product.filter(p => p.category === category)
-      setProductsToShow(filteredProduct)
+      const filteredProduct = product.filter((p) => p.category === category);
+      setProductsToShow(filteredProduct);
     }
-  }
+  };
 
   useEffect(() => {
-    getAllProducts()
-  }, [])
+    getAllProducts();
+  }, []);
 
   useEffect(() => {
     if (category === "All") {
@@ -107,7 +106,6 @@ function Market() {
     }
   }, [category, product]);
 
-
   return (
     <div className="overflow-hidden flex flex-wrap justify-center mx-auto w-full">
       <Navbar />
@@ -115,7 +113,10 @@ function Market() {
       {/* Category Selection and Sell Button */}
       <div className="w-10/12 mt-2 items-end flex justify-between">
         <div className="flex flex-col md:flex-row gap-y-1">
-          <label htmlFor="category" className="font-poppins font-semibold md:text-lg">
+          <label
+            htmlFor="category"
+            className="font-poppins font-semibold md:text-lg"
+          >
             Category:
           </label>
           <select
@@ -147,8 +148,15 @@ function Market() {
           <h3 className="font-bold text-xl w-full text-center font-poppins">
             List your product
           </h3>
-          <form onSubmit={handleSubmit} className="flex items-start flex-col gap-3 p-5 mt-5">
-            <div type="cancel" onClick={() => document.getElementById("my_modal_2").close()} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-start flex-col gap-3 p-5 mt-5"
+          >
+            <div
+              type="cancel"
+              onClick={() => document.getElementById("my_modal_2").close()}
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
               ✕
             </div>
 
@@ -228,7 +236,10 @@ function Market() {
             />
 
             {/* Submit Button */}
-            <button type="submit" className="mx-auto md:mt-5 px-3 py-1.5 text-white text-lg font-semibold font-poppins rounded-md bg-green-600 mt-2 shadow-sm shadow-green-700 hover:bg-green-700 transition-all">
+            <button
+              type="submit"
+              className="mx-auto md:mt-5 px-3 py-1.5 text-white text-lg font-semibold font-poppins rounded-md bg-green-600 mt-2 shadow-sm shadow-green-700 hover:bg-green-700 transition-all"
+            >
               Add Product
             </button>
           </form>
@@ -240,10 +251,22 @@ function Market() {
 
       {/* Products List */}
       <div className="flex md:gap-3 flex-wrap justify-center mx-auto w-full">
-        {loading ? [...Array(8)].map((index) => (
-          <ProductSkeleton key={index} />
-        )) : (productsToShow.length > 0 ? productsToShow.map(p => <Products setProduct={setProduct} setProductsToShow={setProductsToShow} key={p._id} product={p} />) : <div className="w-full h-[80vh] flex justify-center items-center text-xl">No Products Found!</div>)
-        }
+        {loading ? (
+          [...Array(8)].map((index) => <ProductSkeleton key={index} />)
+        ) : productsToShow.length > 0 ? (
+          productsToShow.map((p) => (
+            <Products
+              setProduct={setProduct}
+              setProductsToShow={setProductsToShow}
+              key={p._id}
+              product={p}
+            />
+          ))
+        ) : (
+          <div className="w-full h-[80vh] flex justify-center items-center text-xl">
+            No Products Found!
+          </div>
+        )}
       </div>
     </div>
   );
