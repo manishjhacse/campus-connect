@@ -5,7 +5,7 @@ import { Avatar, AvatarGroup } from "@heroui/react";
 
 export default function Footer() {
   return (
-    <footer className="footer sm:footer-horizontal text-black dark:text-white shadow-lg  bg-slate-100 dark:bg-zinc-800 p-10">
+    <footer className="footer sm:footer-horizontal text-black dark:text-white shadow-lg  bg-slate-100 dark:bg-[#0b0b0b]  p-10">
       <aside>
         <img src={logo} alt="" className="w-20" />
         <p className="text-lg font-semibold">
