@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeLoggedIn } from "../store/loginSlice";
 import { changeLoggedInUser } from "../store/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assests/logo.png";
+import logo from "../assests/project_logo.png";
 import {
   DropdownItem,
   DropdownTrigger,
@@ -34,7 +34,6 @@ function Navbar() {
     setMode(newMode);
     localStorage.setItem("mode", newMode);
   };
-
 
   async function handleLogOut() {
     const toastId = toast.loading("Logging Out");
@@ -67,9 +66,13 @@ function Navbar() {
       <div className="navbar prevent-select transition-all duration-200 fixed overflow-hidden mb-7 z-30 flex  shadow-lg bg-[#fafafa] dark:bg-[#0b0b0b] dark:text-zinc-100 text-zinc-800 ">
         <div className="w-full md:w-10/12 mx-auto">
           <Link to="/" className="flex-1">
-            <img src={logo} className="w-20 text-red-500 transition-all duration-200" alt="" />
+            <img
+              src={logo}
+              className="w-20 text-red-500 transition-all duration-200"
+              alt=""
+            />
           </Link>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-1 md:gap-5">
             {/* Dark/light mode toggle----->> */}
 
             <label className="swap swap-rotate mx-4 h-5 w-5">
@@ -108,7 +111,10 @@ function Navbar() {
                   color="danger"
                   name="Siddhesh"
                   size="md"
-                  src={user?.profilePicture || "https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"}
+                  src={
+                    user?.profilePicture ||
+                    "https://res.cloudinary.com/db7mrhtue/image/upload/v1734089000/b4be53d8b436db600bcdd1ea59c10e92_ibbnhz.jpg"
+                  }
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
