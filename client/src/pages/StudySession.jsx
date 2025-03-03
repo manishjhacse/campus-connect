@@ -32,19 +32,6 @@ export default function StudySession() {
     }, [socket, roomId, user]);
 
     if (!socket) return <div>Loading...</div>; // Prevent rendering before socket connects
-
-    const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-        setIsMobile(window.innerWidth < 768); // Detect mobile screens
-    }, []);
-    if (isMobile) {
-        return (
-            <div className="h-screen flex flex-col items-center justify-center text-center p-4">
-                <h2 className="text-xl font-semibold text-red-500">This feature is not designed for mobile devices.</h2>
-                <p className="text-gray-600 mt-2">Please try using a tablet or a desktop.</p>
-            </div>
-        );
-    }
     return (
         <div className="h-screen w-screen flex">
             {/* Sidebar - Chat & Toggle Buttons */}
