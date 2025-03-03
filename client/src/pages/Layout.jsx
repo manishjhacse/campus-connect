@@ -32,7 +32,7 @@ export default function Layout() {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }, [token]);
   const location = useLocation();
-  const hideFooterRoutes = ["/group", "/group/:roomId", "/adminLogin", "/adminDashboard"];
+  const hideFooterRoutes = ["/group", "/adminLogin", "/adminDashboard"];
   const hideFooter = hideFooterRoutes.some((route) =>
     location.pathname.startsWith(route.replace(":roomId", ""))
   );
