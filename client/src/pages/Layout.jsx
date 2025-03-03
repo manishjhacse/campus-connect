@@ -52,7 +52,6 @@ export default function Layout() {
       localStorage.removeItem("isLoggedin");
       dispatch(changeLoggedIn(false));
       dispatch(changeLoggedInUser({}));
-      toast.success("Logged out");
 
     }
   }
