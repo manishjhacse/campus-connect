@@ -13,7 +13,7 @@ function LandingPage() {
     return <Navigate to="/home" />
   }
   return (
-    <section className="mx-4 my-6 grid max-w-[90rem] grid-cols-1 justify-center gap-12 lg:mx-auto lg:grid-cols-[repeat(auto-fit,minmax(30rem,1fr))]">
+    <section className="mx-4 my-6 grid max-w-[90rem] items-center h-[80vh] grid-cols-1 justify-center gap-12 lg:mx-auto lg:grid-cols-[repeat(auto-fit,minmax(30rem,1fr))]">
       <div className="flex items-center justify-end">
         <Image
           isBlurred
