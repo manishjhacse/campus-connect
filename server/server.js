@@ -32,7 +32,7 @@ socketHandler(io);
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://bpmce-community.vercel.app"],
+    origin: ["https://bpmce-community.vercel.app","https://campusconnect-bpmce.vercel.app"],
     methods: ["POST", "GET","DELETE"],
     credentials: true,
   })
