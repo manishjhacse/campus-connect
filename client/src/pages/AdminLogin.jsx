@@ -24,6 +24,7 @@ export default function AdminLogin() {
             })
             const admin = response.data.admin
             localStorage.setItem("admintoken", response.data.token);
+            localStorage.setItem("adminData", JSON.stringify(admin));
             dispatch(changeLoggedInAdmin(admin))
             toast.dismiss(toastId);
             toast.success("Logged in");

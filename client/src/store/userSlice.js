@@ -1,17 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = localStorage.getItem("loggedInUser")
-  ? JSON.parse(localStorage.getItem("loggedInUser"))
-  : {};
+
+const getInitialState = () => {
+  try {
+    const storedUser = localStorage.getItem("loggedInUser");
+    return storedUser ? JSON.parse(storedUser) : {};
+  } catch (error) {
+    console.error("Error parsing loggedInUser from localStorage:", error);
+    return {};
+  }
+};
+
+const initialState = getInitialState();
+
 const userSlice = createSlice({
-  initialState,
   name: "loggedInUser",
+  initialState,
   reducers: {
     changeLoggedInUser: (state, action) => {
-      const newState = action.payload;
-      localStorage.setItem("loggedInUser", JSON.stringify(newState));
-      return newState;
+      Object.assign(state, action.payload); // Mutates state instead of replacing it
+      localStorage.setItem("loggedInUser", JSON.stringify(state));
     },
   },
 });
+
 export const { changeLoggedInUser } = userSlice.actions;
 export default userSlice.reducer;

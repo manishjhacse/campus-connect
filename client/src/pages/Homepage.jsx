@@ -6,6 +6,10 @@ import { Code } from "@nextui-org/react";
 import Features from "../components/Features";
 import Socialfeed from "../components/Socialfeed";
 import Navbar from "../components/Navbar";
+import { useDispatch } from "react-redux";
+import { changeLoggedIn } from "../store/loginSlice";
+import { changeLoggedInUser } from "../store/userSlice";
+import { toast } from "react-hot-toast";
 
 const features = [
   {
@@ -20,7 +24,7 @@ const features = [
   },
   {
     img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129142/6_jina3v.png",
-    path: "/",
+    path: "/jobs",
     text: "Jobs",
   },
   {
@@ -33,20 +37,21 @@ const features = [
     path: "/rooms",
     text: "Find Roommate",
   },
-  {
-    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
-    path: "/",
-    text: "Academic Resources",
-  },
-  {
-    img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
-    path: "/",
-    text: "Feeeling Stressed",
-  },
+  // {
+  //   img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/7_byg10s.png",
+  //   path: "/",
+  //   text: "Academic Resources",
+  // },
+  // {
+  //   img: "https://res.cloudinary.com/db7mrhtue/image/upload/v1738129145/4_e16buh.png",
+  //   path: "/",
+  //   text: "Feeeling Stressed",
+  // },
 ];
 
 function Homepage() {
   const [titleNumber, setTitleNumber] = useState(0);
+  
   const titles = useMemo(() => ["Connect", "Collaborate", "Conquer "], []);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -59,6 +64,7 @@ function Homepage() {
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles]);
 
+ 
   return (
     <>
       <div className="overflow-hidden mx-auto w-full">
@@ -87,13 +93,13 @@ function Homepage() {
                     animate={
                       titleNumber === index
                         ? {
-                            y: 0,
-                            opacity: 1,
-                          }
+                          y: 0,
+                          opacity: 1,
+                        }
                         : {
-                            y: titleNumber > index ? -150 : 150,
-                            opacity: 0,
-                          }
+                          y: titleNumber > index ? -150 : 150,
+                          opacity: 0,
+                        }
                     }
                   >
                     {title}

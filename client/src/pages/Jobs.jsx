@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Modal,
@@ -10,89 +10,13 @@ import {
   useDisclosure,
   Input,
   Textarea,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import Navbar from "../components/Navbar";
 import { FaPlusCircle } from "react-icons/fa";
-const jobs = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "Tech Corp",
-    location: "Remote",
-    salary: "$60,000 - $80,000",
-    job_type: "Full Time",
-    description:
-      "We are looking for a skilled Frontend Developer to build and maintain our web applications.",
-    qualifications: "Bachelor's degree in Computer Science or related field.",
-    skills: "React, JavaScript, CSS, HTML, Git",
-    applyLink: "#",
-  },
-  {
-    id: 2,
-    title: "Backend Developer",
-    company: "InnovateX",
-    location: "New York, USA",
-    salary: "$70,000 - $90,000",
-    job_type: "Full Time",
-    description:
-      "Seeking an experienced Backend Developer to create scalable APIs and manage databases.",
-    qualifications:
-      "Bachelor's degree in Computer Science or equivalent experience.",
-    skills: "Node.js, Express, SQL, NoSQL, REST APIs",
-    applyLink: "#",
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer",
-    company: "DesignHub",
-    location: "San Francisco, USA",
-    salary: "$50,000 - $70,000",
-    job_type: "Internship",
-    description:
-      "Exciting opportunity for a UI/UX Designer to design user-friendly interfaces.",
-    qualifications: "Degree in Graphic Design, UI/UX, or related field.",
-    skills: "Figma, Adobe XD, User Research, Prototyping",
-    applyLink: "#",
-  },
-  {
-    id: 4,
-    title: "Software Engineer",
-    company: "Infosys",
-    location: "Bangalore, India",
-    salary: "₹8,00,000 - ₹12,00,000",
-    description:
-      "Looking for an experienced Software Engineer to develop scalable applications.",
-    qualifications: "B.E/B.Tech in Computer Science or related field.",
-    skills: "Java, Spring Boot, Microservices, SQL",
-    applyLink: "https://infosys.jobs/softwareengineer",
-  },
-  {
-    id: 5,
-    title: "Data Analyst",
-    company: "TCS",
-    location: "Mumbai, India",
-    salary: "₹6,00,000 - ₹9,00,000",
-    description:
-      "Seeking a Data Analyst to analyze large data sets and generate insights.",
-    qualifications:
-      "Bachelor's degree in Statistics, Mathematics, or relevant field.",
-    skills: "Python, SQL, Excel, Power BI, Tableau",
-    applyLink: "https://tcs.jobs/dataanalyst",
-  },
-  {
-    id: 6,
-    title: "Cyber Security Analyst",
-    company: "Wipro",
-    location: "Hyderabad, India",
-    salary: "₹7,50,000 - ₹11,00,000",
-    description:
-      "Hiring a Cyber Security Analyst to secure networks and prevent cyber threats.",
-    qualifications: "B.Tech/M.Tech in Cyber Security or relevant field.",
-    skills: "Network Security, Ethical Hacking, SIEM, IDS/IPS",
-    applyLink: "https://wipro.jobs/cybersecurity",
-  },
-];
-
+import axios from "axios";
+import { toast } from "react-hot-toast";
 const JobCard = ({ job }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
@@ -147,7 +71,85 @@ const JobCard = ({ job }) => {
 };
 
 const JobPortal = () => {
+  const token = localStorage.getItem("token");
+  const [jobs, setJobs] = useState([])
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [formData, setFormData] = useState({
+    title: "",
+    company: "",
+    location: "",
+    salary: "",
+    job_type: "Full-Time",
+    description: "",
+    qualifications: "",
+    skills: "",
+    applyLink: "",
+  });
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }, [token]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const url = import.meta.env.VITE_BASE_URL;
+    if (!formData.title || !formData.company || !formData.location || !formData.job_type || !formData.applyLink) {
+      toast.error("Required fields missing");
+      return;
+    }
+
+    let toastID = toast.loading("Posting Job");
+
+    try {
+      const response = await axios.post(`${url}/addjob`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+
+      toast.dismiss(toastID);
+      toast.success(response.data.message);
+      setJobs((prev) => [response.data.job, ...prev]);
+      setFormData({
+        title: "",
+        company: "",
+        location: "",
+        salary: "",
+        job_type: "Full-Time",
+        description: "",
+        qualifications: "",
+        skills: "",
+        applyLink: "",
+      });
+    } catch (err) {
+      console.error(err);
+      toast.dismiss(toastID);
+      toast.error(err.response?.data?.message || "Something went wrong!");
+    }
+    onclose()
+  };
+
+  const getAllJobs = async () => {
+    const url = import.meta.env.VITE_BASE_URL;
+    try {
+      const response = await axios.get(`${url}/getjobs`);
+      setJobs(response.data.jobs || []);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to fetch Jobs!");
+    }
+  };
+  useEffect(() => {
+    getAllJobs();
+  }, []);
+  
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-black dark:text-white">
       <Navbar />
@@ -177,20 +179,25 @@ const JobPortal = () => {
               <>
                 <ModalHeader>Add New Job</ModalHeader>
                 <ModalBody>
-                  <Input placeholder="Job Title" />
-                  <Input placeholder="Company" />
-                  <Input placeholder="Location" />
-                  <Input placeholder="Salary" />
-                  <Textarea placeholder="Description" />
-                  <Input placeholder="Qualifications" />
-                  <Input placeholder="Skills" />
-                  <Input placeholder="Apply Link" />
+                  <Input name="title" placeholder="Job Title" value={formData.title} onChange={handleChange} />
+                  <Input name="company" placeholder="Company" value={formData.company} onChange={handleChange} />
+                  <Input name="location" placeholder="Location" value={formData.location} onChange={handleChange} />
+                  <Input name="salary" placeholder="Salary" value={formData.salary} onChange={handleChange} />
+                  <Select name="job_type" label="Select Job Type" value={formData.job_type} onChange={handleChange} className="w-full rounded">
+                    {["Full-Time", "Part-Time", "Contract", "Internship", "Freelance"].map((type) => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </Select>
+                  <Textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} />
+                  <Input name="qualifications" placeholder="Qualifications" value={formData.qualifications} onChange={handleChange} />
+                  <Input name="skills" placeholder="Skills (comma-separated)" value={formData.skills} onChange={handleChange} />
+                  <Input name="applyLink" placeholder="Apply Link" value={formData.applyLink} onChange={handleChange} />
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button color="primary">Save</Button>
+                  <Button onClick={handleSubmit} type="submit" color="primary">Save</Button>
                 </ModalFooter>
               </>
             )}

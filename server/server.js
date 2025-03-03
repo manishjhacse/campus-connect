@@ -8,6 +8,7 @@ const marketRouter = require("./routes/marketRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const roomRouter = require("./routes/roomRoutes");
 const chatRouter = require("./routes/chatRoutes");
+const jobRouter = require("./routes/jobRoutes");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
@@ -56,6 +57,7 @@ app.use("/api", marketRouter);
 app.use("/api", adminRouter);
 app.use("/api", chatRouter);
 app.use("/api", roomRouter);
+app.use("/api", jobRouter);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

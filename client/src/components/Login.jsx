@@ -33,7 +33,7 @@ function Login() {
       })
       const user = res.data.user
       localStorage.setItem("isLoggedin", true);
-      localStorage.setItem("loggedInUser", user);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
       localStorage.setItem("token", res.data.token);
       dispatch(changeLoggedIn(true))
       dispatch(changeLoggedInUser(user))

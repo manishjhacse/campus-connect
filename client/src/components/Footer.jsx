@@ -5,27 +5,26 @@ import { Avatar, AvatarGroup } from "@heroui/react";
 
 export default function Footer() {
   return (
-    <footer className="footer sm:footer-horizontal text-black dark:text-white shadow-lg  bg-slate-100 dark:bg-[#0b0b0b]  p-10">
+    <footer className="footer absolute bottom-0 sm:footer-horizontal text-black dark:text-white shadow-lg  bg-slate-100 dark:bg-[#0b0b0b]  p-10">
       <aside>
-        <img src={logo} alt="" className="w-20" />
-        <p className="text-lg font-semibold">
+        <img src={logo} alt="" className="w-16" />
+        <p className="text-xs font-semibold">
           Copyright © 2025 - All right reserved
         </p>
       </aside>
 
       <span className="flex flex-col gap-1">
-        <p className="text-lg font-semibold">Designed & Developed by</p>
+        <p className="font-semibold mb-1">Designed & Developed by</p>
         <div className="flex gap-2">
-          <AvatarGroup isBordered>
+          <AvatarGroup className="" isBordered>
             <Avatar
               isBordered
-              color="primary"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            />
-            <Avatar
+              color="warning"
+              src="https://res.cloudinary.com/db7mrhtue/image/upload/v1738047745/pfp_bfx0c1.jpg"
+            /> <Avatar
               isBordered
               color="danger"
-              src="https://res.cloudinary.com/db7mrhtue/image/upload/v1738047745/pfp_bfx0c1.jpg"
+              src="https://res.cloudinary.com/dfrcswf0n/image/upload/v1738164544/t98xymvtca79nezp8lfx.jpg"
             />
           </AvatarGroup>
           <p className="text-red">
@@ -48,14 +47,14 @@ export default function Footer() {
 
       <span>
         {" "}
-        <p className="text-lg font-semibold">Under the guidance of</p>
+        <p className=" font-semibold mb-1">Under the guidance of</p>
         <User
           avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+            src: "https://res.cloudinary.com/dfrcswf0n/image/upload/v1740962180/file_66226595c9f28-scaled_vdgqcu.jpg",
             isBordered: true,
-            color: "warning",
+            color: "success",
           }}
-          className="font-semibold text-yellow-600"
+          className="font-semibold text-green-600"
           description="H.O.D. CSE"
           name="Prof. M.P. Singh"
         />{" "}

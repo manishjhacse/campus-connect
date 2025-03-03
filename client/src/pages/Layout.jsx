@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import Homepage from "./Homepage";
@@ -17,15 +17,49 @@ import Problems from "./Problems";
 import Roommates from "./Roommates";
 import Footer from "../components/Footer";
 import Jobs from "./Jobs";
+import PendingUser from "./PendingUser";
+import { changeLoggedIn } from "../store/loginSlice";
+import { changeLoggedInUser } from "../store/userSlice";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function Layout() {
+  const dispatch = useDispatch()
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }, [token]);
   const location = useLocation();
-  const hideFooterRoutes = ["/group", "/group/:roomId"];
+  const hideFooterRoutes = ["/group", "/group/:roomId", "/adminLogin", "/adminDashboard"];
   const hideFooter = hideFooterRoutes.some((route) =>
     location.pathname.startsWith(route.replace(":roomId", ""))
   );
+  const fetchLoggedInUser = async () => {
+    try {
+      const url = import.meta.env.VITE_BASE_URL;
+      const res = await axios.get(`${url}/getLoggedInUser`)
+      const user = res.data.user
+      localStorage.setItem("isLoggedin", true);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      dispatch(changeLoggedIn(true))
+      dispatch(changeLoggedInUser(user))
+    } catch (err) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("isLoggedin");
+      dispatch(changeLoggedIn(false));
+      dispatch(changeLoggedInUser({}));
+      toast.success("Logged out");
+
+    }
+  }
+  useEffect(() => {
+    fetchLoggedInUser(dispatch);
+  }, []);
   return (
-    <div className="w-full h-full">
+    <div className="w-full min-h-screen pb-[367px] md:pb-[152px]">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -42,6 +76,11 @@ export default function Layout() {
             <PrivateRoute>
               <Profile />
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pendinguser"
+          element={<PendingUser />
           }
         />
         <Route
@@ -80,7 +119,7 @@ export default function Layout() {
           path="/jobs"
           element={
             <PrivateRoute>
-              <Jobs/>
+              <Jobs />
             </PrivateRoute>
           }
         />

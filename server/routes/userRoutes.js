@@ -8,7 +8,8 @@ const {
   resetOTP,
   changePassword,
   editProfile,
-  getUserDetails
+  getUserDetails,
+  getLoggedInUser
 } = require("../controllers/userController");
 const { auth } = require("../auth/userAuth");
 router.post("/signup-otp", signupOTP);
@@ -19,5 +20,6 @@ router.post("/logout", logout);
 router.post("/changepassword-otp", resetOTP);
 router.post("/changePassword", changePassword);
 router.get("/getUserDetails",getUserDetails)
+router.get("/getLoggedInUser",auth,getLoggedInUser)
 
 module.exports = router;

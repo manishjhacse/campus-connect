@@ -3,7 +3,7 @@ const roomSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
   smoking: { type: String, enum: ["Allowed", "Not Allowed"] ,required: true },
-  price: { type: Number, required: true },
+  price: { type: String, required: true },
   location: {
     type:String
     // latitude: { type: Number, required: true },

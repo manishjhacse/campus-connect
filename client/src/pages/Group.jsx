@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import uniqid from 'uniqid';
@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 export default function Group() {
     const navigate = useNavigate()
     const [roomId, setRoomId] = useState("")
+    const [isMobile, setIsMobile] = useState(false);
     async function handleJoin(e) {
         e.preventDefault()
         if (roomId == "") {
@@ -20,6 +21,17 @@ export default function Group() {
         e.preventDefault()
         const code = uniqid() + "-" + uniqid()
         setRoomId(code)
+    }
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 768); // Detect mobile screens
+    }, []);
+    if (isMobile) {
+        return (
+            <div className="h-screen flex flex-col items-center justify-center text-center p-4">
+                <h2 className="text-xl font-semibold text-red-500">This feature is not designed for mobile devices.</h2>
+                <p className="text-gray-600 mt-2">Please try using a tablet or a desktop.</p>
+            </div>
+        );
     }
     return (
         <div className=" flex-col items-center">

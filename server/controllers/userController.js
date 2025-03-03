@@ -521,16 +521,22 @@ exports.signup = async (req, res) => {
       await sendMail({
         from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
         to: email,
-        subject: "Welcome to Campus Connect!",
+        subject: "Your Account is Under Verification!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-            <h2 style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; padding: 15px; border-radius: 8px; text-align: center;">Welcome to Campus Connect</h2>
+            <h2 style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; padding: 15px; border-radius: 8px; text-align: center;">
+              Welcome to Campus Connect
+            </h2>
             <p>Hi <strong>${firstName} ${lastName}</strong>,</p>
-            <p>Thank you for registering with <strong>Campus Connect</strong>. We're thrilled to have you on board!</p>
-            <p>Start exploring and stay connected with all your campus activities.</p>
+            <p>Thank you for creating your account on <strong>Campus Connect</strong>! Our team is currently reviewing your registration.</p>
+            <p>Once approved, you'll be able to access all features and engage with the community.</p>
+            <p style="color: #ff4500; font-weight: bold;">Please be patient as this process may take some time.</p>
             <p style="text-align: center; margin-top: 20px;">
-              <a href="https://bpmce-community.vercel.app/" style="text-decoration: none; background-color: #ef4444; color: white; padding: 10px 20px; border-radius: 5px;">Explore Now</a>
+              <a href="https://bpmce-community.vercel.app/" style="text-decoration: none; background-color: #ef4444; color: white; padding: 10px 20px; border-radius: 5px;">
+                Visit Campus Connect
+              </a>
             </p>
+            <p>We appreciate your patience and look forward to welcoming you soon.</p>
             <p>Best Regards, <br> The Campus Connect Team</p>
           </div>
         `,
@@ -857,7 +863,31 @@ exports.editProfile = async (req, res) => {
     });
   }
 };
-
+//
+exports.getLoggedInUser= async (req, res) => {
+  try {
+    const _id=req.user._id
+    const user=await User.findById(_id);
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        message: "No User found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "User found",
+      user
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err,
+      message: "Internal server error",
+    });
+  }
+};
+//
 exports.getUserDetails = async (req, res) => {
   try {
     const _id=req.query.userId
