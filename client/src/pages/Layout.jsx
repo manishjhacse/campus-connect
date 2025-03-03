@@ -32,10 +32,11 @@ export default function Layout() {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }, [token]);
   const location = useLocation();
-  const hideFooterRoutes = ["/group", "/adminLogin", "/adminDashboard"];
-  const hideFooter = hideFooterRoutes.some((route) =>
-    location.pathname.startsWith(route.replace(":roomId", ""))
-  );
+  const hideFooterRoutes = ["/group", "/chat/:chatId/:userId", "/adminLogin", "/adminDashboard"];
+  const hideFooter = hideFooterRoutes.some((route) => {
+    const regex = new RegExp(`^${route.replace(/:\w+/g, "[^/]+")}$`);
+    return regex.test(location.pathname);
+  });
   const fetchLoggedInUser = async () => {
     try {
       const url = import.meta.env.VITE_BASE_URL;

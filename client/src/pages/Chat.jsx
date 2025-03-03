@@ -18,7 +18,6 @@ function Chat() {
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
   const senderName = location.state.name;
-  const chattingWith = location.state.chattingWith;
 
   useEffect(() => {
     if (!token) {
@@ -103,7 +102,7 @@ function Chat() {
     <div className="w-full h-full">
       <Navbar />
       <div className="flex justify-center pt-20 items-center">
-        <h1 className="text-xl font-semibold mb-4">{`Chatting with ${chattingWith}`}</h1>
+        {/* <h1 className="text-xl font-semibold mb-4">{`Chatting with ${chattingWith}`}</h1> */}
       </div>
       <section className="h-full px-4 overflow-y-auto hideScrollBar pb-16">
         {chats.map((messageContent, index) => {
@@ -129,7 +128,7 @@ function Chat() {
         <div ref={messagesEndRef} />
       </section>
       {/* Send Message Input */}
-      <div className=" flex justify-center items-center fixed bottom-0 w-full p-2">
+      <div className=" flex z-50 justify-center items-center fixed bottom-0 w-full p-2">
          <input
           type="text"
           value={message}
@@ -142,7 +141,7 @@ function Chat() {
           placeholder="Send Message..."
           className="input mx-1 input-bordered rounded-full w-full max-w-xs dark:bg-slate-800 bg-white shadow-md text-black dark:text-white active:outline-none focus:outline-none"
         />
-        <button  onClick={handleSend} className=" bg-blue-600 shadow-md shadow-blue-800 w-10 h-10 md:w-11 md:h-11 rounded-full p-3 relative text-xl md:text-2xl text-center text-white mx-1">
+        <button  onClick={handleSend} className=" bg-blue-600  shadow-md shadow-blue-800 w-10 h-10 md:w-11 md:h-11 rounded-full p-3 relative text-xl md:text-2xl text-center text-white mx-1">
           <IoSend />
         </button>
       </div>
