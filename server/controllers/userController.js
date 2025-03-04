@@ -60,10 +60,11 @@ exports.signupOTP = async (req, res) => {
         );
         return res.json({
           success: true,
-          message: `OTP already sent. Request a new one after ${Math.floor(
+          message: `OTP sent. Check Spam or try again in ${Math.floor(
             (remainingTimeInMillis - 8 * 60 * 1000) / 1000
-          )} seconds.`,
+          )} sec.`,
         });
+        
       }
 
       savedOtp = await OTP.findOneAndUpdate(
