@@ -26,11 +26,6 @@ import axios from "axios";
 
 export default function Layout() {
   const dispatch = useDispatch()
-  const token = localStorage.getItem("token");
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }, [token]);
   const location = useLocation();
   const hideFooterRoutes = ["/group", "/chat/:chatId/:userId", "/adminLogin", "/adminDashboard"];
   const hideFooter = hideFooterRoutes.some((route) => {
@@ -40,7 +35,17 @@ export default function Layout() {
   const fetchLoggedInUser = async () => {
     try {
       const url = import.meta.env.VITE_BASE_URL;
-      const res = await axios.get(`${url}/getLoggedInUser`)
+      const token = localStorage.getItem("token"); 
+      if (!token) {
+        console.error("No token found in localStorage");
+        return;
+      }
+      const res = await axios.get(`${url}/getLoggedInUser`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      });
       const user = res.data.user
       localStorage.setItem("isLoggedin", true);
       localStorage.setItem("loggedInUser", JSON.stringify(user));
