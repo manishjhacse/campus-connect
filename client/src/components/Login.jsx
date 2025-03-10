@@ -12,8 +12,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate=useNavigate()
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: ""
+    email: "demo@campusconnect.com",
+    password: "Demo@1234"
   });
   function handleLoginData(e) {
     setLoginData({ ...loginData, [e.target.name]: e.target.value })
@@ -84,7 +84,7 @@ function Login() {
 
           {/* Login input form starts from here */}
           <div className="grid max-w-md w-full gap-6 px-12 max-sm:px-6 py-8 rounded-lg dark:text-zinc-100 text-zinc-800 sm:ring-1 ring-zinc-300 dark:ring-zinc-800 mt-3 bg-[#fafafa] dark:bg-[#111]">
-            <h2 className="text-4xl font-bold my-4 mb-6">Sign in</h2>
+            <h2 className="text-4xl font-bold my-4 mb-6">Sign in</h2> 
             <div className="grid gap-1 w-full dark:text-gray-200">
               <label htmlFor="loginemail" className="">
                 Email
