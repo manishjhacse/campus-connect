@@ -12,8 +12,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate=useNavigate()
   const [loginData, setLoginData] = useState({
-    email: "demo@campusconnect.com",
-    password: "Demo@1234"
+    email: "",
+    password: ""
   });
   function handleLoginData(e) {
     setLoginData({ ...loginData, [e.target.name]: e.target.value })

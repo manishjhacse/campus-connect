@@ -10,6 +10,9 @@ export default function PrivateRoute({ children }) {
     if(loggedInUser.status==="pending"){
       return <Navigate to="/pendinguser" />;
     }
+    if(loggedInUser.isSuspended===true){
+      return <Navigate to="/suspendeduser" />;
+    }
     return children;
   } else {
     return <Navigate to="/" />;

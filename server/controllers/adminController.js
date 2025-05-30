@@ -184,20 +184,148 @@ exports.rejectUser = async (req, res) => {
     });
   }
 };
+exports.suspendUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.isSuspended = true;
+    await user.save();
+
+    // Send Suspension Email
+    try {
+      await sendMail({
+        from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
+        to: user.email,
+        subject: "Your Campus Connect Account Has Been Suspended",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h1 style="background-color: #f59e0b; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 0;">
+              Account Suspended
+            </h1>
+            <p>Hi <strong>${user.firstName} ${user.lastName}</strong>,</p>
+            <p>We wanted to inform you that your account on <strong>Campus Connect</strong> has been temporarily suspended due to certain policy violations or concerns that need review.</p>
+            <p>If you believe this suspension was made in error or have any questions, please reach out to our support team immediately at <a href="mailto:manishjhaproject@gmail.com">Gmail</a>.</p>
+            <p>Your access has been restricted until further notice. We appreciate your cooperation in resolving this matter.</p>
+            <p>Best Regards,<br>The Campus Connect Team</p>
+          </div>
+        `,
+      });
+    } catch (mailError) {
+      console.error("Error sending suspension email:", mailError.message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User suspended successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error suspending user",
+      error: err.message,
+    });
+  }
+};
+
+exports.removeSuspendUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.isSuspended = false;
+    await user.save();
+
+    // Send Reinstatement Email
+    try {
+      await sendMail({
+        from: "BPMCE Campus Connect <manishjhaproject@gmail.com>",
+        to: user.email,
+        subject: "Your Account Has Been Reinstated",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h1 style="background-color: #10b981; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 0;">
+              Account Reinstated
+            </h1>
+            <p>Hi <strong>${user.firstName} ${user.lastName}</strong>,</p>
+            <p>We're pleased to inform you that your account on <strong>Campus Connect</strong> has been reinstated and is now active.</p>
+            <p>You can now log in and continue using the platform as usual. If you experience any issues or have further questions, feel free to contact our support team at <a href="mailto:manishjhaproject@gmail.com">Gmail</a>.</p>
+            <p>Welcome back!</p>
+            <p>Best Regards,<br>The Campus Connect Team</p>
+          </div>
+        `,
+      });
+    } catch (mailError) {
+      console.error("Error sending reinstatement email:", mailError.message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User reinstated successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error reinstating user",
+      error: err.message,
+    });
+  }
+};
+
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const { page = 1, limit = 15, registration_no } = req.query;
+    const { page = 1, limit = 15, registration_no, status } = req.query;
 
     const parsedPage = Math.max(1, parseInt(page) || 1);
     const parsedLimit = Math.max(1, parseInt(limit) || 15);
 
     let query = {};
+
     if (registration_no) {
       query.registration_no = { $regex: registration_no, $options: "i" };
     }
 
-    const [users, totalCount, numberOfUsers, numberOfPendingUser, numberOfApprovedUser, numberOfRejectedUser] = await Promise.all([
+    // Add status filter if it's valid
+    if (status && ["pending", "approved", "rejected"].includes(status)) {
+      query.status = status;
+    }
+
+    const [
+      users,
+      totalCount,
+      numberOfUsers,
+      numberOfPendingUser,
+      numberOfApprovedUser,
+      numberOfRejectedUser,
+    ] = await Promise.all([
       User.find(query)
         .select("-password")
         .limit(parsedLimit)
@@ -207,14 +335,14 @@ exports.getAllUsers = async (req, res) => {
       User.countDocuments({}),
       User.countDocuments({ status: "pending" }),
       User.countDocuments({ status: "approved" }),
-      User.countDocuments({ status: "rejected" })
+      User.countDocuments({ isSuspended: true }),
     ]);
 
     const stats = {
       numberOfUsers,
       numberOfPendingUser,
       numberOfApprovedUser,
-      numberOfRejectedUser
+      numberOfRejectedUser,
     };
 
     res.json({
@@ -223,11 +351,10 @@ exports.getAllUsers = async (req, res) => {
       totalCount,
       totalPages: Math.ceil(totalCount / parsedLimit),
       users,
-      stats
+      stats,
     });
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-

@@ -23,11 +23,12 @@ import { changeLoggedInUser } from "../store/userSlice";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import SuspendedUser from "./SuspendedUser";
 
 export default function Layout() {
   const dispatch = useDispatch()
   const location = useLocation();
-  const hideFooterRoutes = ["/group", "/chat/:chatId/:userId", "/adminLogin", "/adminDashboard"];
+  const hideFooterRoutes = ["/group", "/chat/:chatId/:userId", "/adminLogin"];
   const hideFooter = hideFooterRoutes.some((route) => {
     const regex = new RegExp(`^${route.replace(/:\w+/g, "[^/]+")}$`);
     return regex.test(location.pathname);
@@ -86,6 +87,14 @@ export default function Layout() {
         <Route
           path="/pendinguser"
           element={<PendingUser />
+          }
+        />
+        <Route
+          path="/suspendeduser"
+          element={
+            <PrivateRoute>
+              <SuspendedUser />
+            </PrivateRoute>
           }
         />
         <Route

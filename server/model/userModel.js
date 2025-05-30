@@ -7,8 +7,13 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String },
   bio: { type: String },
   mobile: { type: Number },
-  registration_no: { type: Number, required: true },
+  registration_no: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   status: { type: String, default: "pending", required: true },
+  isSuspended: { type: Boolean, default: false },
 });
 const otpSchema = new mongoose.Schema({
   email: { type: String, required: true },
