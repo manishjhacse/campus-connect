@@ -92,9 +92,7 @@ export default function Layout() {
         <Route
           path="/suspendeduser"
           element={
-            <PrivateRoute>
               <SuspendedUser />
-            </PrivateRoute>
           }
         />
         <Route
