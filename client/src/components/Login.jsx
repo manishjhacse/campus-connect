@@ -31,7 +31,7 @@ function Login() {
       const res = await axios.post(`${url}/login`, loginData, {
         withCredentials: true
       })
-      console.log(user)
+      const user = res.data.user
       localStorage.setItem("isLoggedin", true);
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       localStorage.setItem("token", res.data.token);
